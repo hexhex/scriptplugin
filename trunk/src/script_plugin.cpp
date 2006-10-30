@@ -22,6 +22,7 @@
 #include <sstream>
 #include <cerrno>
 #include <csignal>
+#include <vector>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -43,7 +44,6 @@ public:
         
         std::string in;
         in = query.getInputTuple()[0].getUnquotedString();
-        // check if: (in == "")
         
         std::vector<Tuple> out;
         
@@ -66,12 +66,13 @@ public:
         switch (process) {
            
             case -1:
+            {
                 throw PluginError("Error while forking process");
             break;
-            
+            }
             
             case 0:
-/***/std::cout << "DEBUG: KindProzess";
+            {
                 if (::dup2(stdoutpipe[1],STDOUT_FILENO) < 0) {
                     throw PluginError("Error while duplicating pipe-end");
                 }
@@ -96,9 +97,8 @@ public:
                     throw PluginError("Error while closing pipe-end");
                 }
                 
+/**             alternative approach (doesnt work) => remove...
                 char *cmdArray[100];
-                // FIXME: number of arguments should be unlimited 
-                //         -> use: std::vector<char *> cmdArray;
                 
                 int start;
                 int end;
@@ -119,6 +119,27 @@ public:
                 }
                 
                 cmdArray[++i] = (char *)0;
+**/             
+                
+                
+/****/          
+                std::vector<std::string> cmdVector;
+                std::string buf;
+                std::stringstream ss(in);
+                
+                while (ss >> buf) {
+                    cmdVector.push_back(buf);
+                }
+                
+                char *cmdArray[cmdVector.size()+1];
+                
+                int j;
+                for (j=0; j<cmdVector.size(); j++) {
+                    strcpy(cmdArray[j],cmdVector.at(j).c_str());
+                }
+                
+                cmdArray[++j] = (char *)0;
+/****/          
                 
                 
                 if (execvp(cmdArray[0], cmdArray) < 0) {
@@ -128,10 +149,10 @@ public:
                 throw PluginError("Error while executing command");
             
             break;
-            
+            }
             
             default:
-                
+            {
                 if (::close(stdoutpipe[1]) < 0) {
                     throw PluginError("Error while closing pipe-end");
                 }
@@ -158,7 +179,7 @@ public:
                     puffer[strlen(puffer)-1] = '\0';
                    
                     Tuple tuple;
-                    // maybe use 'false'-tag, when working with INTs
+                    // maybe use 'false'-tag, when getting just an INT
                     tuple.push_back(Term(puffer,true));
                     out.push_back(tuple);
                 }
@@ -174,6 +195,7 @@ public:
                 answer.addTuples(out);
                 
             break;
+            }
         }
     }
 };

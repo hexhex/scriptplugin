@@ -1,0 +1,1 @@
+{python_temp("python script.py"), perl_temp("perl script.pl"), shell_temp("bash script.sh"), python_script("script.py"), perl_script("script.pl"), shell_script("script.sh"), python_exec("python "), perl_exec("perl "), shell_exec("bash ")}
