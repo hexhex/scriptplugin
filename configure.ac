@@ -1,7 +1,7 @@
 
 AC_PREREQ(2.59)
 
-AC_INIT([dlvhex-scriptplugin],[0.0.1],[anton_korosec@hotmail.com])
+AC_INIT([dlvhex-scriptplugin],[0.1.0],[anton_korosec@hotmail.com])
 
 AC_CONFIG_SRCDIR([src/scriptplugin.cpp])
 
@@ -63,6 +63,7 @@ AC_SUBST([plugindir])
 AC_CONFIG_FILES([
            Makefile 
            src/Makefile
+           testsuite/Makefile
 ])
 
 AC_OUTPUT
