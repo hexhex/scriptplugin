@@ -1,0 +1,3 @@
+shell(X) :- &script["../example1/script.sh"](X).
+perl(X) :- &script["../example1/script.pl"](X).
+python(X) :- &script["../example1/script.py"](X).

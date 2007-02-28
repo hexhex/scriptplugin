@@ -2,7 +2,9 @@ AUTOMAKE_OPTIONS = foreign
 
 plugin_LTLIBRARIES = libdlvhexscript.la
 
-libdlvhexscript_la_SOURCES = scriptplugin.cpp
+libdlvhexscript_la_SOURCES = ScriptPlugin.cpp \
+                             ScriptAtom.cpp \
+                             ScriptConverter.cpp
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
