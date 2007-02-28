@@ -1,3 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = src testsuite
+SUBDIRS = src \
+          include \
+	  testsuite \
+	  examples

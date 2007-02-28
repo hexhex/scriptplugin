@@ -3,7 +3,7 @@ AC_PREREQ(2.59)
 
 AC_INIT([dlvhex-scriptplugin],[0.1.0],[anton_korosec@hotmail.com])
 
-AC_CONFIG_SRCDIR([src/scriptplugin.cpp])
+AC_CONFIG_SRCDIR([src/ScriptPlugin.cpp])
 
 # AC_CONFIG_HEADER([src/config.h])
 AM_CONFIG_HEADER([src/config.h])
@@ -42,7 +42,7 @@ AC_PROG_LIBTOOL
 #
 # of course we need dlvhex itself!
 #
-PKG_CHECK_MODULES([DLVHEX], [dlvhex >= 1.1])
+PKG_CHECK_MODULES([DLVHEX], [dlvhex >= 1.4])
 
 #
 # where the plugin will be installed by default.
@@ -63,7 +63,9 @@ AC_SUBST([plugindir])
 AC_CONFIG_FILES([
            Makefile 
            src/Makefile
+           include/Makefile
            testsuite/Makefile
+	   examples/Makefile
 ])
 
 AC_OUTPUT

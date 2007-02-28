@@ -1,1 +1,8 @@
-../simple.hex simple.out
+../example1/script.hex example1.out
+../example2/int.hex example2.out
+../ls.hex example3.out --convert=../example3/conv1.py
+../example4/conv2.hex example4.out --convert=../example4/conv2.sh
+../example5/family.txt example5.out ../example5/family.hex --convert=../example5/family.py --filter=brother_sister
+../example6/day_of_week.hex example6.out --filter=day_of_week
+../example7/input.hex example7.out --convert=../example7/rename.py
+../example8/query.hex example8.out --convert=../example8/query.py --filter=set,create,insert
