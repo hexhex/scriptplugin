@@ -33,6 +33,7 @@ AC_C_CONST
 
 # Checks for library functions.
 AC_LIBTOOL_DLOPEN
+AC_DISABLE_STATIC # we don't need a static lbrary
 AC_PROG_LIBTOOL
 
 #
