@@ -2,7 +2,6 @@ date(10,3,1985).
 
 script("../example6/day_of_week.py").
 
-% doesnt work...(?)
 day_of_week(G) :- date(X,Y,Z),script(S),
                   &concat[S," "](A),
                   &concat[A,X](B),
@@ -12,11 +11,3 @@ day_of_week(G) :- date(X,Y,Z),script(S),
                   &concat[E,Z](F),
                   &script[F](G).
 
-% meanwhile:
-day_of_week(G) :- f(F),&script[F](G).
-f(F) :- e(E),date(X,Y,Z),&concat[E,Z](F).
-e(E) :- d(D),&concat[D," "](E).
-d(D) :- c(C),date(X,Y,Z),&concat[C,Y](D).
-c(C) :- b(B),&concat[B," "](C).
-b(B) :- a(A),date(X,Y,Z),&concat[A,X](B).
-a(A) :- script(S),&concat[S," "](A).
