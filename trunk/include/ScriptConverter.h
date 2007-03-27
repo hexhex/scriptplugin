@@ -20,10 +20,10 @@ class ScriptConverter : public PluginConverter {
 
 public:
     ScriptConverter();
-    void ScriptConverter::setConverter(std::vector<std::string> convScript);
-    virtual void ScriptConverter::convert(std::istream& i, std::ostream& o);
+    void setConverter(std::vector<std::string> convScript);
+    virtual void convert(std::istream& i, std::ostream& o);
 
 private:
     std::vector<std::string> scriptVector;
-    void ScriptConverter::removeTempFile(std::ofstream& file);
+    void removeTempFile(std::ofstream& file);
 };
