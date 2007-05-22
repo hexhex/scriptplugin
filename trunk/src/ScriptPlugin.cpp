@@ -36,8 +36,9 @@ ScriptPlugin::setOptions(bool doHelp, std::vector<std::string>& argv,
                          std::ostream& out) {
 
     if (doHelp) {
-        out << "     --convert=SCRIPT ";
-        out << "Specify script for converting the input";
+        //      123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-
+        out << "Script-plugin: " << std::endl << std::endl;
+        out << " --convert=SCRIPT Specify script for converting the input" << std::endl;
         return;
     }
 
