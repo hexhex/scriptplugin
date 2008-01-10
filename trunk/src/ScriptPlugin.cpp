@@ -15,6 +15,9 @@
 #include "ScriptPlugin.h"
 
 
+namespace dlvhex {
+  namespace script {
+
 ScriptPlugin::ScriptPlugin()
     : converter(new ScriptConverter()) {
 }
@@ -27,7 +30,8 @@ ScriptPlugin::~ScriptPlugin() {
 
 void
 ScriptPlugin::getAtoms(AtomFunctionMap& a) {
-    a["script"] = new ScriptAtom;
+  boost::shared_ptr<PluginAtom> script(new ScriptAtom);
+  a["script"] = script;
 }
 
 
@@ -77,12 +81,17 @@ ScriptPlugin::createConverter() {
 }
 
 
-extern "C"
-ScriptPlugin*
-PLUGINIMPORTFUNCTION() {
-    theScriptPlugin.setVersion(SCRIPTPLUGIN_MAJOR,
-                               SCRIPTPLUGIN_MINOR,
-                               SCRIPTPLUGIN_MICRO);
+ScriptPlugin theScriptPlugin;
 
-    return &theScriptPlugin;
+  } // namespace script
+} // namespace dlvhex
+
+extern "C"
+dlvhex::script::ScriptPlugin*
+PLUGINIMPORTFUNCTION() {
+  dlvhex::script::theScriptPlugin.setVersion(SCRIPTPLUGIN_MAJOR,
+					     SCRIPTPLUGIN_MINOR,
+					     SCRIPTPLUGIN_MICRO);
+
+  return &dlvhex::script::theScriptPlugin;
 }

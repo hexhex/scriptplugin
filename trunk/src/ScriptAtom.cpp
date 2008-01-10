@@ -14,6 +14,10 @@
 
 #include "ScriptAtom.h"
 
+#include <unistd.h>
+
+namespace dlvhex {
+  namespace script {
 
 ScriptAtom::ScriptAtom() {
     addInputConstant();
@@ -185,3 +189,6 @@ ScriptAtom::retrieve(const Query& query, Answer& answer) throw (PluginError) {
         }
     }
 }
+
+  } // namespace script
+} // namespace dlvhex
