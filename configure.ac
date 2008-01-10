@@ -1,7 +1,7 @@
 
 AC_PREREQ(2.59)
 
-AC_INIT([dlvhex-scriptplugin],[0.1.0],[anton_korosec@hotmail.com])
+AC_INIT([dlvhex-scriptplugin],[0.2.0],[anton_korosec@hotmail.com])
 
 AC_CONFIG_SRCDIR([src/ScriptPlugin.cpp])
 
@@ -18,6 +18,16 @@ AC_DEFINE_UNQUOTED([SCRIPTPLUGIN_MICRO], [$MICRO], [Micro version number of the 
 
 
 AM_INIT_AUTOMAKE
+
+AC_CANONICAL_HOST
+
+# by default we look into /opt/local and /sw for include files (macports vs. fink)
+case $host_os in
+     darwin*|macosx*)
+        CPPFLAGS="$CPPFLAGS -I/opt/local/include -I/sw/include"
+     ;;
+esac
+
 
 # Checks for programs.
 AC_PROG_CXX
@@ -44,6 +54,8 @@ AC_PROG_LIBTOOL
 # of course we need dlvhex itself!
 #
 PKG_CHECK_MODULES([DLVHEX], [dlvhex >= 1.4])
+
+AC_PATH_BOOST([1.33.0], [], [AC_MSG_ERROR([could not find boost library. Download it at http://www.boost.org/.])])
 
 #
 # where the plugin will be installed by default.
