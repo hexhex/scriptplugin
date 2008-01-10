@@ -14,6 +14,8 @@
 
 #include "ScriptConverter.h"
 
+namespace dlvhex {
+  namespace script {
 
 ScriptConverter::ScriptConverter() {
     // init
@@ -21,7 +23,7 @@ ScriptConverter::ScriptConverter() {
 
 
 void
-ScriptConverter::setConverter(std::vector<std::string> convScript) {
+ScriptConverter::setConverter(const std::vector<std::string>& convScript) {
 
     // set converter(script), which will be called to convert the input
 
@@ -232,3 +234,6 @@ ScriptConverter::removeTempFile(std::ofstream& file) {
         }
     }
 }
+
+  } // namespace script
+} // namespace dlvhex

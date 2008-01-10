@@ -8,14 +8,23 @@
  * @brief  script-plugin for DLVHEX
  */
 
-#include <dlvhex/PluginInterface.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#if !defined(_DLVHEX_SCRIPTATOM_H)
+#define _DLVHEX_SCRIPTATOM_H
 
+#include <dlvhex/PluginInterface.h>
+
+namespace dlvhex {
+  namespace script {
 
 class ScriptAtom : public PluginAtom {
-
 public:
     ScriptAtom();
-    void retrieve(const Query& query, Answer& answer) throw (PluginError);
+
+    void
+    retrieve(const Query& query, Answer& answer) throw (PluginError);
 };
+
+  } // namespace script
+} // namespace dlvhex
+
+#endif // _DLVHEX_SCRIPTATOM_H

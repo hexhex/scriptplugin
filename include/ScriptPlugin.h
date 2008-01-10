@@ -8,13 +8,17 @@
  * @brief  script-plugin for DLVHEX
  */
 
+#if !defined(_DLVHEX_SCRIPTPLUGIN_H)
+#define _DLVHEX_SCRIPTPLUGIN_H
+
 #include "ScriptAtom.h"
 #include "ScriptConverter.h"
 #include <dlvhex/PluginInterface.h>
 
+namespace dlvhex {
+  namespace script {
 
 class ScriptPlugin : public PluginInterface {
-
 public:
     ScriptPlugin();
     ~ScriptPlugin();
@@ -28,5 +32,7 @@ private:
     ScriptConverter* converter;
 };
 
-ScriptPlugin theScriptPlugin;
-extern "C" ScriptPlugin* PLUGINIMPORTFUNCTION();
+  } // namespace script
+} // namespace dlvhex
+
+#endif // _DLVHEX_SCRIPTPLUGIN_H
