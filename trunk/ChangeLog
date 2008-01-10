@@ -1,0 +1,18 @@
+2008-01-10  Thomas Krennwallner  <tkren@kr.tuwien.ac.at>
+
+	* include/ScriptAtom.h: Adapt to new dlvhex plugin API.
+	* include/ScriptPlugin.h: Likewise.
+	* include/ScriptConverter.h: Likewise.
+	* src/ScriptPlugin.cpp: Likewise.
+	* src/ScriptConverter.cpp: Likewise.
+	* src/ScriptAtom.cpp: Likewise.
+
+	* configure.ac: Bump version to 0.2.0.
+	Check for boost.
+
+	* bootstrap.sh: Use autoreconf.
+
+	* m4/boost.m4: New file.
+	* NEWS: Likewise.
+	* AUTHORS: Likewise.
+
