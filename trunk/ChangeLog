@@ -1,3 +1,13 @@
+2008-01-27  Thomas Krennwallner  <tkren@kr.tuwien.ac.at>
+
+	* testsuite/run-dlvhex-tests.sh: Fix script.
+
+	* testsuite/Makefile.am: Setup environment for run-dlvhex-tests.sh.
+
+	* src/ScriptPlugin.cpp: Set plugin name to PACKAGE_TARNAME.
+
+	* examples/tests/dlvhextests.test: Fix testcase invocation.
+
 2008-01-10  Thomas Krennwallner  <tkren@kr.tuwien.ac.at>
 
 	* include/ScriptAtom.h: Adapt to new dlvhex plugin API.
