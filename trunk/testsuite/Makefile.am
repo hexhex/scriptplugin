@@ -7,4 +7,4 @@ TESTS = run-dlvhex-tests.sh
 EXTRA_DIST = run-dlvhex-tests.sh
 
 # some variables for the test-script
-TESTS_ENVIRONMENT = TESTDIR=$(top_srcdir)/examples/tests
+TESTS_ENVIRONMENT = TESTDIR=$(top_srcdir)/examples/tests DLVHEX=dlvhex PARAMETERS="-s"
