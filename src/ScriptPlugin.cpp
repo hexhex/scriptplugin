@@ -89,6 +89,7 @@ ScriptPlugin theScriptPlugin;
 extern "C"
 dlvhex::script::ScriptPlugin*
 PLUGINIMPORTFUNCTION() {
+  dlvhex::script::theScriptPlugin.setPluginName(PACKAGE_TARNAME);
   dlvhex::script::theScriptPlugin.setVersion(SCRIPTPLUGIN_MAJOR,
 					     SCRIPTPLUGIN_MINOR,
 					     SCRIPTPLUGIN_MICRO);
