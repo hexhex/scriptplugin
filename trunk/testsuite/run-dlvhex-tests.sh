@@ -1,10 +1,28 @@
 #!/bin/bash
 
-DLVHEX=dlvhex
+#
+# dlvhex -- Answer-Set Programming with external interfaces.
+# Copyright (C) 2005, 2006, 2007 Roman Schindlauer
+# 
+# This file is part of dlvhex.
+#
+# dlvhex is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# dlvhex is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with dlvhex; if not, write to the Free Software Foundation,
+# Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
 
-TMPFILE=$(mktemp)
-
-cd $TESTDIR
+MKTEMP="mktemp -t tmp.XXXXXXXXXX"
+TMPFILE=$($MKTEMP) # global temp. file for answer sets
 
 failed=0
 warned=0
@@ -12,39 +30,55 @@ ntests=0
 
 echo ============ dlvhex tests start ============
 
-for t in $(find -name '*.test' -type f)
+for t in $(find $TESTDIR -name '*.test' -type f)
 do
     while read HEXPROGRAM ANSWERSETS ADDPARM
     do
 	let ntests++
 
-	$DLVHEX -s $ADDPARM $HEXPROGRAM | egrep -v "^$" > $TMPFILE
+	HEXPROGRAM=$TESTDIR/$HEXPROGRAM
+    ANSWERSETS=$TESTDIR/$ANSWERSETS
+
+	if [ ! -f $HEXPROGRAM ] || [ ! -f $ANSWERSETS ]; then
+	    test ! -f $HEXPROGRAM && echo WARN: Could not find program file $HEXPROGRAM
+	    test ! -f $ANSWERSETS && echo WARN: Could not find answer sets file $ANSWERSETS
+	    continue
+	fi
+
+	# run dlvhex with specified parameters and program
+	$DLVHEX  $PARAMETERS $ADDPARM $HEXPROGRAM | egrep -v "^$" > $TMPFILE
 
 	if cmp -s $TMPFILE $ANSWERSETS
 	then
 	    echo PASS: $HEXPROGRAM
 	else
+
 	    # and now check which answersets differ
 
-	    pasted=$(mktemp)
+	    pasted=$($MKTEMP)
 	    paste $ANSWERSETS $TMPFILE > $pasted
 
 	    OLDIFS=$IFS
 	    IFS=" " # we need the tabs for cut
 
-	    nas=1
+	    nas=1 # counter for answer sets
 
-            # todo: handle different costs in case of weak constraints!
-
-	    while read
+ 	    while read
 	    do
-		# translate both answersets to python lists
-		a1=$(echo $REPLY | cut -f1 | sed s/"'"/"\\\'"/g | sed s/"{"/"['"/ | sed s/", "/"', '"/g | sed s/"}"/"']"/)
-		a2=$(echo $REPLY | cut -f2 | sed s/"'"/"\\\'"/g | sed s/"{"/"['"/ | sed s/", "/"', '"/g | sed s/"}"/"']"/)
+			# translate both answersets to python lists
+			a1=$(echo $REPLY | cut -f1 | sed s/"'"/"\\\'"/g | sed s/"{"/"['"/ | sed s/", "/"', '"/g | sed s/"}"/"']"/)
+			a2=$(echo $REPLY | cut -f2 | sed s/"'"/"\\\'"/g | sed s/"{"/"['"/ | sed s/", "/"', '"/g | sed s/"}"/"']"/)
 
-		# now check if set difference yields incomparability
-		if cat <<EOF | python
+			# check if this is a weak answerset info
+			if [ $(echo "$a1" | awk '{ print match($0, "Cost ") }') = 1 ] && [ $(echo "$a2"  | awk '{ print match($0, "Cost ") }') = 1 ] ; then
+			    let nas--
+			    if [ "$a1" != "$a2" ] ; then
+				echo "FAIL: Answer set costs differ: $a1 vs. $a2"
+				let failed++
+			    fi
+			elif cat <<EOF | python
 # -*- coding: utf-8 -*-
+# now check if set difference yields incomparability
 import sys, sets
 a1 = $a1
 a2 = $a2
@@ -56,15 +90,15 @@ s1 = sets.Set(a1)
 s2 = sets.Set(a2)
 sys.exit(len(s1 - s2))
 EOF
-		then
-		    echo "WARN: $HEXPROGRAM (answerset $nas has different ordering)"
-		    let warned++
-		else
-		    echo "FAIL: $HEXPROGRAM (answerset $nas differs)"
-		    let failed++
-		fi
+			then
+				echo "WARN: $DLVHEX $PARAMETERS $ADDPARM $HEXPROGRAM (answerset $nas has different ordering)"
+				let warned++
+			else
+				echo "FAIL: $DLVHEX $PARAMETERS $ADDPARM $HEXPROGRAM (answerset $nas differs)"
+        			let failed++
+			fi
 
-		let nas++
+			let nas++
 	    done < $pasted # redirected pasted file to the while loop
 
 	    IFS=$OLDIFS
