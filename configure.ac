@@ -5,7 +5,6 @@ AC_INIT([dlvhex-scriptplugin],[0.2.0],[anton_korosec@hotmail.com])
 
 AC_CONFIG_SRCDIR([src/ScriptPlugin.cpp])
 
-# AC_CONFIG_HEADER([src/config.h])
 AM_CONFIG_HEADER([src/config.h])
 
 MAJOR=`echo $PACKAGE_VERSION | sed "s/^\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/"`
@@ -53,9 +52,14 @@ AC_PROG_LIBTOOL
 #
 # of course we need dlvhex itself!
 #
-PKG_CHECK_MODULES([DLVHEX], [dlvhex >= 1.4])
+PKG_CHECK_MODULES([DLVHEX], [dlvhex >= 1.7])
 
-AC_PATH_BOOST([1.33.0], [], [AC_MSG_ERROR([could not find boost library. Download it at http://www.boost.org/.])])
+# checking for boost libs
+BOOST_REQUIRE([1.33.0])
+BOOST_SMART_PTR
+BOOST_STRING_ALGO
+BOOST_TOKENIZER
+
 
 #
 # where the plugin will be installed by default.
