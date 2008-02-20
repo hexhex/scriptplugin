@@ -1,5 +1,4 @@
-
-AC_PREREQ(2.59)
+AC_PREREQ(2.61)
 
 AC_INIT([dlvhex-scriptplugin],[0.2.0],[anton_korosec@hotmail.com])
 
