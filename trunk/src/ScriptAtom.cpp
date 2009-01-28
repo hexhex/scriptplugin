@@ -15,6 +15,8 @@
 #include "ScriptAtom.h"
 
 #include <unistd.h>
+#include <climits>
+#include <cstring>
 
 namespace dlvhex {
   namespace script {
