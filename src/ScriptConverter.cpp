@@ -14,6 +14,8 @@
 
 #include "ScriptConverter.h"
 
+#include <climits>
+
 namespace dlvhex {
   namespace script {
 
