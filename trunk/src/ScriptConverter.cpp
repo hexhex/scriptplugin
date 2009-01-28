@@ -16,6 +16,8 @@
 
 #include <climits>
 
+#include <sys/wait.h>
+
 namespace dlvhex {
   namespace script {
 
