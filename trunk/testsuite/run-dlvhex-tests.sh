@@ -28,16 +28,18 @@ failed=0
 warned=0
 ntests=0
 
+cd $EXAMPLES
+
 echo ============ dlvhex tests start ============
 
-for t in $(find $TESTDIR -name '*.test' -type f)
+for t in $(find -name '*.test' -type f)
 do
     while read HEXPROGRAM ANSWERSETS ADDPARM
     do
 	let ntests++
 
-	HEXPROGRAM=$TESTDIR/$HEXPROGRAM
-    ANSWERSETS=$TESTDIR/$ANSWERSETS
+	#HEXPROGRAM=$TESTDIR/$HEXPROGRAM
+	#ANSWERSETS=$TESTDIR/$ANSWERSETS
 
 	if [ ! -f $HEXPROGRAM ] || [ ! -f $ANSWERSETS ]; then
 	    test ! -f $HEXPROGRAM && echo WARN: Could not find program file $HEXPROGRAM
@@ -79,16 +81,16 @@ do
 			elif cat <<EOF | python
 # -*- coding: utf-8 -*-
 # now check if set difference yields incomparability
-import sys, sets
+import sys
 a1 = $a1
 a2 = $a2
 z1 = zip(a1,a2)
 z2 = zip(z1, range(len(z1)))
 z3 = [ e for e in z2 if e[0][0] != e[0][1] ]
 for e in z3: print 'In Answerset ' + str($nas) + ' (fact ' + str(e[1]) + '): ' + e[0][0] + ' vs. ' + e[0][1]
-s1 = sets.Set(a1)
-s2 = sets.Set(a2)
-sys.exit(len(s1 - s2))
+s1 = set(a1)
+s2 = set(a2)
+sys.exit(len(s1.symmetric_difference(s2)))
 EOF
 			then
 				echo "WARN: $DLVHEX $PARAMETERS $ADDPARM $HEXPROGRAM (answerset $nas has different ordering)"

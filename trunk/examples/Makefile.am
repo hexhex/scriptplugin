@@ -1,5 +1,4 @@
 EXTRA_DIST = ls.hex \
-             demos/Makefile \
 	     example1/script.hex \
 	     example1/script.pl \
 	     example1/script.py \

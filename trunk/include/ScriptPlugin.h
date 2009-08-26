@@ -29,6 +29,7 @@ public:
 
 private:
     bool activatePlugin;
+    std::string addToPath;
     ScriptConverter* converter;
 };
 
