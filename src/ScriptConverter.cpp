@@ -15,6 +15,8 @@
 #include "ScriptConverter.h"
 
 #include <climits>
+#include <sstream>
+#include <cstdlib>
 
 #include <sys/wait.h>
 
@@ -44,6 +46,14 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
         // or maybe just pass the original input to the o-stream...
         // o = i; return;
     }
+
+    // the command, which will be executed, consists of the script
+    // and the temporary file (containing the istream i) as argument
+
+    // we can add more than just the first element of scriptVector
+
+    const std::string command =
+      scriptVector.at(0) + " " + TEMP_FILE_NAME;
 
     // create two pipes
 
@@ -127,18 +137,10 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
                 throw PluginError("Error while closing pipe-end");
             }
 
-            // the command, which will be executed, consists of the script
-            // and the temporary file (containing the istream i) as argument
-
-            // we can add more than just the first element of scriptVector
-
-            const char *command = (scriptVector.at(0) + " " +
-                                   TEMP_FILE_NAME).c_str();
-
             // the -c flag means: "Pass the string argument to the shell to be
             //                     interpreted as input."
 
-            if (::execlp("/bin/sh", "sh", "-c", command, (char *) 0) < 0) {
+            if (::execlp("/bin/sh", "sh", "-c", command.c_str(), (char *) 0) < 0) {
                 ScriptConverter::removeTempFile(file);
                 throw PluginError("Error while executing command");
             }
@@ -216,7 +218,15 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
                 }
             } else {
                 ScriptConverter::removeTempFile(file);
-                throw PluginError("Invalid script or error while processing");
+                std::stringstream s;
+                s << "Error executing '/bin/sh -c " << command << "'";
+#                 ifdef _GNU_SOURCE
+                s << " pwd='" << ::get_current_dir_name() << "'";
+#                 endif
+                s << " shell returned exit status " << WEXITSTATUS(status);
+                if( WEXITSTATUS(status) == 127 )
+                  s << " (maybe you want to use the --addpath option)";
+                throw PluginError(s.str());
             }
 
             break;

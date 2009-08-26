@@ -17,6 +17,8 @@
 #include <unistd.h>
 #include <climits>
 #include <cstring>
+#include <sstream>
+#include <cstdlib>
 
 #include <sys/wait.h>
 
@@ -184,6 +186,18 @@ ScriptAtom::retrieve(const Query& query, Answer& answer) throw (PluginError) {
                     if (::fclose(reading) == EOF) {
                         throw PluginError("Error while closing pipe-stream");
                     }
+                }
+                else
+                {
+                  std::stringstream s;
+                  s << "Error executing '/bin/sh -c " << in << "'";
+#                 ifdef _GNU_SOURCE
+                  s << " pwd='" << ::get_current_dir_name() << "'";
+#                 endif
+                  s << " shell returned exit status " << WEXITSTATUS(status);
+                  if( WEXITSTATUS(status) == 127 )
+                    s << " (maybe you want to use the --addpath option)";
+                  throw PluginError(s.str());
                 }
             }
 
