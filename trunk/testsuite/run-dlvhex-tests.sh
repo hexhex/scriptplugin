@@ -47,6 +47,7 @@ do
 	    continue
 	fi
 
+	echo $DLVHEX  $PARAMETERS $ADDPARM $HEXPROGRAM | egrep -v "^$" > $TMPFILE
 	# run dlvhex with specified parameters and program
 	$DLVHEX  $PARAMETERS $ADDPARM $HEXPROGRAM | egrep -v "^$" > $TMPFILE
 
