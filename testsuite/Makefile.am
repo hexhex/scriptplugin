@@ -1,5 +1,3 @@
-AUTOMAKE_OPTIONS = foreign
-
 # run the test script
 TESTS = run-dlvhex-tests.sh
 

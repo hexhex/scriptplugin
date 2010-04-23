@@ -1,5 +1,3 @@
-AUTOMAKE_OPTIONS = gnu
-
 plugin_LTLIBRARIES = libdlvhexscript.la
 
 libdlvhexscript_la_SOURCES = ScriptPlugin.cpp \
