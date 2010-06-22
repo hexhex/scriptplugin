@@ -1,0 +1,1 @@
+{insert("INSERT INTO table VALUES (Technical,University,Vienna)"), create("CREATE table"), set("SELECT column FROM table"), set("SELECT first FROM table"), set("SELECT all FROM table")}
