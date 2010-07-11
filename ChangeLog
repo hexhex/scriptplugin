@@ -1,3 +1,11 @@
+2010-07-11  Thomas Krennwallner  <tkren@kr.tuwien.ac.at>
+
+	* doxygen.cfg: Add support for doxygen.
+	* doxygen.am: Likewise.
+	* configure.ac: Likewise.
+	* Makefile.am: Likewise.
+	* m4/doxygen.m4: Likewise.
+
 2010-06-22  Thomas Krennwallner  <tkren@kr.tuwien.ac.at>
 
 	Release Version 1.7.0.
