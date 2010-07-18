@@ -15,6 +15,7 @@
 #include "ScriptAtom.h"
 
 #include <unistd.h>
+#include <cstdio>
 #include <climits>
 #include <cstring>
 #include <sstream>
