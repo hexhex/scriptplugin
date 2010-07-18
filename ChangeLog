@@ -2,6 +2,10 @@
 
 	Release version 1.7.1.
 
+	* configure.ac: Bump version to 1.7.1.
+
+	* AUTHORS: Add email address.
+
 	* src/ScriptAtom.cpp: g++ 4.4 introduced some backwards
 	incompatibility <http://gcc.gnu.org/gcc-4.4/porting_to.html> for
 	C-functions: #include cstdio.
