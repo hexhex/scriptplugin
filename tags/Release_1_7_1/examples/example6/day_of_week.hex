@@ -1,0 +1,13 @@
+date(10,3,1985).
+
+script("../example6/day_of_week.py").
+
+day_of_week(G) :- date(X,Y,Z),script(S),
+                  &concat[S," "](A),
+                  &concat[A,X](B),
+                  &concat[B," "](C),
+                  &concat[C,Y](D),
+                  &concat[D," "](E),
+                  &concat[E,Z](F),
+                  &script[F](G).
+
