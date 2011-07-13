@@ -1,5 +1,0 @@
-point(1). point(2).
-point(3). point(4).
-
-edge(X,Y) :- point(X),point(Y),X<Y.
-plain(X,Y,Z) :- point(X),edge(X,Y),edge(X,Z),point(Y),point(Z),X<Y,X<Z,Y<Z.

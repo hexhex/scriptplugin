@@ -1,5 +1,0 @@
-example1/script.hex tests/example1.out --addpath=./example1
-example2/int.hex tests/example2.out
-ls.hex tests/example3.out --convert=example3/conv1.py
-example4/conv2.hex tests/example4.out --convert=conv2.sh --addpath=example4
-example7/input.hex tests/example7.out --convert=example7/rename.py

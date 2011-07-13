@@ -1,2 +1,0 @@
-married_to(Y,X) :- married_to(X,Y).
-brother_sister(X,Y) :- married_to(P,Q),child_of(X,P),child_of(Y,P),child_of(X,Q),child_of(Y,Q),X!=Y.

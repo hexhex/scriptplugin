@@ -1,9 +1,0 @@
-#Text#
-
-Father is married to Mother.
-
-Son is the child of Father.
-Daughter is the child of Father.
-Son is the child of Mother.
-Daughter is the child of Mother.
-

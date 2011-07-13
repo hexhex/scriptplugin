@@ -1,2 +1,0 @@
-o(X) :- &script["./example2/int.sh"](X).
-o(X) :- &script["./example2/int.py"](X).
