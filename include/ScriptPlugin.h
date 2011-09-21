@@ -23,7 +23,7 @@ public:
     ScriptPlugin();
     ~ScriptPlugin();
     PluginConverter* createConverter();
-    void getAtoms(AtomFunctionMap& m);
+    void getAtoms(PluginAtomMap& m);
     void setOptions(bool doHelp, std::vector<std::string>& argv,
                     std::ostream& out);
 

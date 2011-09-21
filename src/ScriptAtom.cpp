@@ -13,6 +13,8 @@
 #endif /* HAVE_CONFIG_H */
 
 #include "ScriptAtom.h"
+#include "dlvhex/Registry.hpp"
+#include "dlvhex/Term.hpp"
 
 #include <unistd.h>
 #include <cstdio>
@@ -26,188 +28,189 @@
 namespace dlvhex {
   namespace script {
 
-ScriptAtom::ScriptAtom() {
-    addInputConstant();
-    setOutputArity(1);
-}
+	ScriptAtom::ScriptAtom() : PluginAtom("script", 0) {
+		addInputConstant();
+		setOutputArity(1);
+	}
 
 
-void
-ScriptAtom::retrieve(const Query& query, Answer& answer) throw (PluginError) {
+	void
+	ScriptAtom::retrieve(const Query& query, Answer& answer) throw (PluginError) {
 
-    std::string in = query.getInputTuple()[0].getUnquotedString();
-    std::vector<Tuple> out;
+		Registry &registry = *getRegistry();
 
-    // create two pipes and fork process
+		std::string in = registry.terms.getByID(query.input[0]).getUnquotedString();
+		std::vector<Tuple> out;
+		//Tuple out;
 
-    int stdoutpipe[2];
-    int stderrpipe[2];
-    pid_t pid;
-    int status;
+		// create two pipes and fork process
 
-    if (::pipe(stdoutpipe) < 0) {
-        throw PluginError("Error while creating pipe");
-    }
+    	int stdoutpipe[2];
+		int stderrpipe[2];
+    	pid_t pid;
+    	int status;
 
-    if (::pipe(stderrpipe) < 0) {
-        throw PluginError("Error while creating pipe");
-    }
+		if (::pipe(stdoutpipe) < 0) {
+        	throw PluginError("Error while creating pipe");
+    	}
 
-    switch (pid = ::fork()) {
+		if (::pipe(stderrpipe) < 0) {
+        	throw PluginError("Error while creating pipe");
+    	}
 
-        case -1:
-        {
-            throw PluginError("Error while forking process");
-            break;
-        }
+    	switch (pid = ::fork()) {
+       		case -1:
+       		{
+          		throw PluginError("Error while forking process");
+           		break;
+       		}
 
-        case 0:
-        {
-            // ChildProcess: redirect stdout and stderr to the pipes,
-            //               close pipe-ends and execute the command
+       		case 0:
+       		{
+           		// ChildProcess: redirect stdout and stderr to the pipes,
+           		//               close pipe-ends and execute the command
+           		if (::dup2(stdoutpipe[1], STDOUT_FILENO) < 0) {
+					throw PluginError("Error while duplicating pipe-end");
+				}
 
-            if (::dup2(stdoutpipe[1], STDOUT_FILENO) < 0) {
-                throw PluginError("Error while duplicating pipe-end");
-            }
+            	if (::dup2(stderrpipe[1], STDERR_FILENO) < 0) {
+					throw PluginError("Error while duplicating pipe-end");
+				}
 
-            if (::dup2(stderrpipe[1], STDERR_FILENO) < 0) {
-                throw PluginError("Error while duplicating pipe-end");
-            }
+            	if (::close(stdoutpipe[0]) < 0) {
+					throw PluginError("Error while closing pipe-end");
+            	}
 
-            if (::close(stdoutpipe[0]) < 0) {
-                throw PluginError("Error while closing pipe-end");
-            }
+            	if (::close(stdoutpipe[1]) < 0) {
+					throw PluginError("Error while closing pipe-end");
+            	}
 
-            if (::close(stdoutpipe[1]) < 0) {
-                throw PluginError("Error while closing pipe-end");
-            }
+            	if (::close(stderrpipe[0]) < 0) {
+					throw PluginError("Error while closing pipe-end");
+            	}
 
-            if (::close(stderrpipe[0]) < 0) {
-                throw PluginError("Error while closing pipe-end");
-            }
+            	if (::close(stderrpipe[1]) < 0) {
+					throw PluginError("Error while closing pipe-end");
+            	}
 
-            if (::close(stderrpipe[1]) < 0) {
-                throw PluginError("Error while closing pipe-end");
-            }
+            	// the -c flag means: "Pass the string argument to the shell to be
+            	//                     interpreted as input."
+				if (::execlp("/bin/sh", "sh", "-c", in.c_str(), (char *) 0) < 0) {
+					throw PluginError("Error while executing command");
+            	}
 
-            // the -c flag means: "Pass the string argument to the shell to be
-            //                     interpreted as input."
+            	throw PluginError("Error while executing command");
+            	break;
+			}
 
-            if (::execlp("/bin/sh", "sh", "-c", in.c_str(), (char *) 0) < 0) {
-                throw PluginError("Error while executing command");
-            }
+        	default:
+        	{
+           		// FatherProcess: close pipe-ends we dont need
+           		if (::close(stdoutpipe[1]) < 0) {
+					throw PluginError("Error while closing pipe-end");
+           		}
 
-            throw PluginError("Error while executing command");
-            break;
-        }
+           		if (::close(stderrpipe[0]) < 0) {
+					throw PluginError("Error while closing pipe-end");
+           		}
 
-        default:
-        {
-            // FatherProcess: close pipe-ends we dont need
+           		if (::close(stderrpipe[1]) < 0) {
+					throw PluginError("Error while closing pipe-end");
+           		}
 
-            if (::close(stdoutpipe[1]) < 0) {
-                throw PluginError("Error while closing pipe-end");
-            }
+           		// wait until ChildProcess terminates
 
-            if (::close(stderrpipe[0]) < 0) {
-                throw PluginError("Error while closing pipe-end");
-            }
+           		if (::waitpid(pid, &status, 0) < 0) {
+					throw PluginError("Error waiting for child-process");
+           		}
 
-            if (::close(stderrpipe[1]) < 0) {
-                throw PluginError("Error while closing pipe-end");
-            }
+           		// if the ChildProcess exited normally than get result from pipe
 
-            // wait until ChildProcess terminates
+           		if (WIFEXITED(status)) {
+					if (WEXITSTATUS(status) == 0) {
 
-            if (::waitpid(pid, &status, 0) < 0) {
-                throw PluginError("Error waiting for child-process");
-            }
+						FILE *reading;
+                    	char puffer[PIPE_BUF];
 
-            // if the ChildProcess exited normally than get result from pipe
+                    	// open pipe for reading and read from it (line-wise)
 
-            if (WIFEXITED(status)) {
-                if (WEXITSTATUS(status) == 0) {
+                    	if ((reading = ::fdopen(stdoutpipe[0], "r")) == (FILE *) NULL) {
+                        	throw PluginError("Error while opening pipe for reading");
+                    	}
 
-                    FILE *reading;
-                    char puffer[PIPE_BUF];
+                    	bool isInt = true;
 
-                    // open pipe for reading and read from it (line-wise)
+                    	// what we read from the pipe stream is the result, which was
+                    	// printed to stdout, from the script that we executed in the
+                    	// ChildProcess
 
-                    if ((reading = ::fdopen(stdoutpipe[0], "r")) == (FILE *) NULL) {
-                        throw PluginError("Error while opening pipe for reading");
-                    }
+                    	// maybe even check if stderrpipe is empty and
+               			// handle errors from script
+               			while (::fgets(puffer, PIPE_BUF, reading)) {
 
-                    bool isInt = true;
+							puffer[::strlen(puffer)-1] = '\0';
 
-                    // what we read from the pipe stream is the result, which was
-                    // printed to stdout, from the script that we executed in the
-                    // ChildProcess
+                        	Tuple tuple;
 
-                    // maybe even check if stderrpipe is empty and
-                    // handle errors from script
+                        	// test if every character is a digit
 
-                    while (::fgets(puffer, PIPE_BUF, reading)) {
+                        	for (int i=0; i<(::strlen(puffer)-1); i++) {
+								if (!::isdigit(puffer[i])) {
+									isInt = false;
+								}
+                        	}
 
-                        puffer[::strlen(puffer)-1] = '\0';
+                        	// if there are just digits => 2nd argument of Term() is FALSE
+                        	//                             (creates a "number term"
+                        	//                              without quotes)
+                        	//                     else => 2nd argument is TRUE (creates a
+                        	//                              "string term" with quotes)
+                        			
+                        	if (isInt) {
+								Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_INTEGER, puffer);
+								tuple.push_back(registry.storeTerm(newterm));
+							} else {
+								Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_CONSTANT, '"'+puffer+'"');
+								tuple.push_back(registry.storeTerm(newterm));
+                        	}
 
-                        Tuple tuple;
+                        	// we just create "single tuples"
+                        	// (each tuple has only one term)
 
-                        // test if every character is a digit
+                        	out.push_back(tuple);
+						}
 
-                        for (int i=0; i<(::strlen(puffer)-1); i++) {
-                            if (!::isdigit(puffer[i])) {
-                                isInt = false;
-                            }
-                        }
+                    	if (::ferror(reading)) {
+                        	throw PluginError("Error while reading from pipe");
+                    	}
 
-                        // if there are just digits => 2nd argument of Term() is FALSE
-                        //                             (creates a "number term"
-                        //                              without quotes)
-                        //                     else => 2nd argument is TRUE (creates a
-                        //                              "string term" with quotes)
+                    	// close the pipe stream
+               			if (::fclose(reading) == EOF) {
+							throw PluginError("Error while closing pipe-stream");
+						}
+						
+					} else {
+                  		std::stringstream s;
+                  		s << "Error executing '/bin/sh -c " << in << "'";
+						# ifdef _GNU_SOURCE
+                  		s << " pwd='" << ::get_current_dir_name() << "'";
+						# endif
+                  		s << " shell returned exit status " << WEXITSTATUS(status);
+                  		if( WEXITSTATUS(status) == 127 )
+                    		s << " (maybe you want to use the --addpath option)";
+                  		throw PluginError(s.str());
+                	}
+				}
 
-                        if (isInt) {
-                            tuple.push_back(Term(puffer, false));
-                        } else {
-                            tuple.push_back(Term(puffer, true));
-                        }
+				//answer.get().push_back(out);
+				for (unsigned int i=0; i<out.size(); i++) {
+					answer.get().push_back(out[i]);
+				}
 
-                        // we just create "single tuples"
-                        // (each tuple has only one term)
-
-                        out.push_back(tuple);
-                    }
-
-                    if (::ferror(reading)) {
-                        throw PluginError("Error while reading from pipe");
-                    }
-
-                    // close the pipe stream
-
-                    if (::fclose(reading) == EOF) {
-                        throw PluginError("Error while closing pipe-stream");
-                    }
-                }
-                else
-                {
-                  std::stringstream s;
-                  s << "Error executing '/bin/sh -c " << in << "'";
-#                 ifdef _GNU_SOURCE
-                  s << " pwd='" << ::get_current_dir_name() << "'";
-#                 endif
-                  s << " shell returned exit status " << WEXITSTATUS(status);
-                  if( WEXITSTATUS(status) == 127 )
-                    s << " (maybe you want to use the --addpath option)";
-                  throw PluginError(s.str());
-                }
-            }
-
-            answer.addTuples(out);
-
-            break;
-        }
-    }
-}
+            	break;
+			}
+		}
+	}
 
   } // namespace script
 } // namespace dlvhex

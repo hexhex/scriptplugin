@@ -16,13 +16,13 @@
 namespace dlvhex {
   namespace script {
 
-class ScriptAtom : public PluginAtom {
-public:
-    ScriptAtom();
+	class ScriptAtom : public PluginAtom {
+		public:
+    		ScriptAtom();
 
-    void
-    retrieve(const Query& query, Answer& answer) throw (PluginError);
-};
+    		void
+    		retrieve(const Query& query, Answer& answer) throw (PluginError);
+	};
 
   } // namespace script
 } // namespace dlvhex
