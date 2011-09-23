@@ -30,7 +30,8 @@ EXTRA_DIST = ls.hex \
 	     tests/example6.out \
 	     tests/example7.out \
 	     tests/example8.out \
-		 ../testsuite/run-dlvhex-tests.sh
+		 ../testsuite/run-dlvhex-tests.sh \
+		 ../testsuite/answerset_compare.py
 		 
 # run the test script
 TESTS = $(top_srcdir)/testsuite/run-dlvhex-tests.sh
