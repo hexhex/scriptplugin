@@ -1,1 +1,1 @@
-test(X) :- &script["ls .."](X).
+test(X) :- &script["ls lsdir"](X).

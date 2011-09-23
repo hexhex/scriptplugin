@@ -1,4 +1,7 @@
 EXTRA_DIST = ls.hex \
+		 lsdir/file1 \
+		 lsdir/file2 \
+		 lsdir/file3 \
 	     example1/script.hex \
 	     example1/script.pl \
 	     example1/script.py \
@@ -26,5 +29,17 @@ EXTRA_DIST = ls.hex \
 	     tests/example5.out \
 	     tests/example6.out \
 	     tests/example7.out \
-	     tests/example8.out
+	     tests/example8.out \
+		 ../testsuite/run-dlvhex-tests.sh
+		 
+# run the test script
+TESTS = $(top_srcdir)/testsuite/run-dlvhex-tests.sh
+
+# some variables for the test-script
+TESTS_ENVIRONMENT = \
+	TOP_SRCDIR=$(top_srcdir) \
+	DLVHEX="$(DLVHEX_BINDIR)/dlvhex -s --plugindir=$(top_builddir)/src --verbose=255" \
+	EXAMPLESDIR=$(top_srcdir)/examples \
+	TESTDIR=$(top_srcdir)/examples/tests 
+
 

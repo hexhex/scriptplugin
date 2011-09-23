@@ -17,10 +17,10 @@ uninstall-local:
 	cd $(DESTDIR)/$(docdir) && rm -rf html
 
 
-SUBDIRS = src \
-          include \
-	  testsuite \
-	  examples
+SUBDIRS = \
+	src \
+	include \
+	examples
 
 EXTRA_DIST = \
     doxygen.am \

@@ -124,7 +124,7 @@ namespace dlvhex {
 					throw PluginError("Error waiting for child-process");
            		}
 
-           		// if the ChildProcess exited normally than get result from pipe
+           		// if the ChildProcess exited normally then get result from pipe
 
            		if (WIFEXITED(status)) {
 					if (WEXITSTATUS(status) == 0) {
@@ -159,18 +159,20 @@ namespace dlvhex {
 									isInt = false;
 								}
                         	}
-
-                        	// if there are just digits => 2nd argument of Term() is FALSE
-                        	//                             (creates a "number term"
-                        	//                              without quotes)
-                        	//                     else => 2nd argument is TRUE (creates a
-                        	//                              "string term" with quotes)
-                        			
+							
+							std::cerr << "SABINE PUFFER #" << puffer << "# " << puffer[0] << std::endl;
                         	if (isInt) {
-								Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_INTEGER, puffer);
-								tuple.push_back(registry.storeTerm(newterm));
+								//std::cerr << "SABINE " << (puffer[0] >= '0' ? "yes!" : "no!") << std::endl;
+								//std::cerr << "SABINE " << (puffer[0] <= '9' ? "yes!" : "no!") << std::endl;
+								//Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_INTEGER, puffer);
+								//std::cerr << "SABINE #" << puffer << "#" << std::endl;
+								//tuple.push_back(registry.storeTerm(newterm));
+								tuple.push_back(ID::termFromInteger(atoi(puffer)));
 							} else {
-								Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_CONSTANT, '"'+puffer+'"');
+								std::string termsymbol(puffer);
+								Term newterm(ID::MAINKIND_TERM, '"'+termsymbol+'"');
+								std::cerr << "SABINE SYMBOL #" << termsymbol << "# " << std::endl;
+								std::cerr << "SABINE SYMBOL 2 #" << ('"'+termsymbol+'"') << " #"  << std::endl;
 								tuple.push_back(registry.storeTerm(newterm));
                         	}
 
