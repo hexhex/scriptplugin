@@ -101,6 +101,10 @@ DX_PDF_FEATURE([OFF])
 DX_PS_FEATURE([OFF])
 DX_INIT_DOXYGEN([dlvhex-scriptplugin], [doxygen.cfg], [doc])
 
+#
+# check for python (we need its path)
+#
+AC_PATH_PROG(PYTHON,[python], [AC_MSG_ERROR([Cannot find python!])])
 
 #
 # all needed makefiles
@@ -110,6 +114,7 @@ AC_CONFIG_FILES([
            src/Makefile
            include/Makefile
 		   examples/Makefile
+		   examples/example3/conv1.py
 ])
 
 AC_OUTPUT
@@ -135,4 +140,5 @@ $PACKAGE_TARNAME $PACKAGE_VERSION configuration:
  - Path settings
  prefix: $prefix
  plugindir: $plugindir
+ python: $PYTHON
 EOF
