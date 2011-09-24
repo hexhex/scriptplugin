@@ -35,6 +35,11 @@ ScriptConverter::setConverter(const std::vector<std::string>& convScript) {
 
     this->scriptVector = convScript;
 }
+	  
+bool
+ScriptConverter::hasConverter() {
+	return !this->scriptVector.empty();
+}
 
 
 void

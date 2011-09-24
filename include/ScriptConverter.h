@@ -26,6 +26,9 @@ public:
 
     void
     setConverter(const std::vector<std::string>& convScript);
+	
+	bool
+	hasConverter();
 
     virtual void
     convert(std::istream& i, std::ostream& o);

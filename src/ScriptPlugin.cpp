@@ -27,7 +27,7 @@ namespace dlvhex {
 
 
 	ScriptPlugin::~ScriptPlugin() {
-		delete converter;
+		converter.reset();
 	}
 
 
@@ -40,18 +40,18 @@ namespace dlvhex {
 
 	}
 
+	void
+	ScriptPlugin::printUsage(std::ostream& out) {
+		
+		out << "Script-plugin: " << std::endl << std::endl;
+		out << " --convert=SCRIPT Specify script for converting the input" << std::endl;
+		out << " --addpath=PATH   Specify paths to prepend to the shell PATH " 
+			<< "variable (searchpath for scripts)" << std::endl;
+		return;
+	}
 
 	void
 	ScriptPlugin::processOptions(std::list<const char*>& pluginOptions, ProgramCtx& ctx) {
-
-		//if (doHelp) {
-        	//      123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-
-		//	out << "Script-plugin: " << std::endl << std::endl;
-		//	out << " --convert=SCRIPT Specify script for converting the input" << std::endl;
-		//	out << " --addpath=PATH   Specify paths to prepend to the shell PATH " 
-		//		<< "variable (searchpath for scripts)" << std::endl;
-		//	return;
-		//}
 
 		std::vector<std::string> convScript;
 		std::vector<std::list<const char*>::iterator> found;
@@ -63,7 +63,7 @@ namespace dlvhex {
 			option.assign(*it);
         	o = option.find("--convert=");
         	if (o != std::string::npos) {
-           		this->activatePlugin = 1;
+           		//this->activatePlugin = 1;
            		convScript.push_back(option.substr(10));
            		converter->setConverter(convScript);
            		found.push_back(it);
@@ -97,14 +97,15 @@ namespace dlvhex {
 	}
 
 
-	PluginConverter*
-	ScriptPlugin::createConverter() {
+	PluginConverterPtr
+	ScriptPlugin::createConverter(ProgramCtx& ctx) {
 		
-		if (!this->activatePlugin) {
-        	return 0;
+		//if (!this->activatePlugin) {
+		if (!converter->hasConverter()) {
+			PluginConverterPtr pc;
+        	return pc;
     	}
-
-    	return converter;
+		return converter;
 	}
 
 

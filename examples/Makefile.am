@@ -1,7 +1,4 @@
-EXTRA_DIST = ls.hex \
-		 lsdir/file1 \
-		 lsdir/file2 \
-		 lsdir/file3 \
+EXTRA_DIST = \
 	     example1/script.hex \
 	     example1/script.pl \
 	     example1/script.py \
@@ -9,6 +6,7 @@ EXTRA_DIST = ls.hex \
 	     example2/int.hex \
 	     example2/int.py \
 	     example2/int.sh \
+		 example3/ls.hex \
 	     example3/conv1.py \
 	     example4/conv2.hex \
 	     example4/conv2.sh \
@@ -21,6 +19,9 @@ EXTRA_DIST = ls.hex \
 	     example7/rename.py \
 	     example8/query.hex \
 	     example8/query.py \
+		 lsdir/file1 \
+		 lsdir/file2 \
+		 lsdir/file3 \
 	     tests/dlvhextests.test \
 	     tests/example1.out \
 	     tests/example2.out \

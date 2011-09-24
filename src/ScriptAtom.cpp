@@ -37,14 +37,15 @@ namespace dlvhex {
 	void
 	ScriptAtom::retrieve(const Query& query, Answer& answer) throw (PluginError) {
 
+		//std::cerr << "SABINE TEST" << std::endl;
+		
 		Registry &registry = *getRegistry();
 
 		std::string in = registry.terms.getByID(query.input[0]).getUnquotedString();
+		//std::cerr << "SABINE IN #" << in << "#" << std::endl;
 		std::vector<Tuple> out;
-		//Tuple out;
 
 		// create two pipes and fork process
-
     	int stdoutpipe[2];
 		int stderrpipe[2];
     	pid_t pid;
@@ -160,19 +161,12 @@ namespace dlvhex {
 								}
                         	}
 							
-							std::cerr << "SABINE PUFFER #" << puffer << "# " << puffer[0] << std::endl;
                         	if (isInt) {
-								//std::cerr << "SABINE " << (puffer[0] >= '0' ? "yes!" : "no!") << std::endl;
-								//std::cerr << "SABINE " << (puffer[0] <= '9' ? "yes!" : "no!") << std::endl;
-								//Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_INTEGER, puffer);
-								//std::cerr << "SABINE #" << puffer << "#" << std::endl;
-								//tuple.push_back(registry.storeTerm(newterm));
-								tuple.push_back(ID::termFromInteger(atoi(puffer)));
+								Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_INTEGER, puffer);
+								tuple.push_back(registry.storeTerm(newterm));
 							} else {
 								std::string termsymbol(puffer);
 								Term newterm(ID::MAINKIND_TERM, '"'+termsymbol+'"');
-								std::cerr << "SABINE SYMBOL #" << termsymbol << "# " << std::endl;
-								std::cerr << "SABINE SYMBOL 2 #" << ('"'+termsymbol+'"') << " #"  << std::endl;
 								tuple.push_back(registry.storeTerm(newterm));
                         	}
 
