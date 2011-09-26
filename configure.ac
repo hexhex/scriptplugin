@@ -113,8 +113,11 @@ AC_CONFIG_FILES([
            Makefile 
            src/Makefile
            include/Makefile
-		   examples/Makefile
-		   examples/example3/conv1.py
+           examples/Makefile
+           examples/example3/conv1.py
+],
+[
+  chmod a+x examples/example3/conv1.py
 ])
 
 AC_OUTPUT

@@ -7,7 +7,6 @@ EXTRA_DIST = \
 	     example2/int.py \
 	     example2/int.sh \
 		 example3/ls.hex \
-	     example3/conv1.py \
 	     example4/conv2.hex \
 	     example4/conv2.sh \
 	     example5/family.hex \
@@ -33,7 +32,7 @@ EXTRA_DIST = \
 	     tests/example8.out \
 		 ../testsuite/run-dlvhex-tests.sh \
 		 ../testsuite/answerset_compare.py
-		 
+
 # run the test script
 TESTS = $(top_srcdir)/testsuite/run-dlvhex-tests.sh
 
