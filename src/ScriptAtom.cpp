@@ -29,20 +29,16 @@ namespace dlvhex {
   namespace script {
 
 	ScriptAtom::ScriptAtom() : PluginAtom("script", 0) {
+		
 		addInputConstant();
 		setOutputArity(1);
 	}
 
 
-	void
-	ScriptAtom::retrieve(const Query& query, Answer& answer) throw (PluginError) {
-
-		//std::cerr << "SABINE TEST" << std::endl;
+	void ScriptAtom::retrieve(const Query& query, Answer& answer) throw (PluginError) {
 		
 		Registry &registry = *getRegistry();
-
 		std::string in = registry.terms.getByID(query.input[0]).getUnquotedString();
-		//std::cerr << "SABINE IN #" << in << "#" << std::endl;
 		std::vector<Tuple> out;
 
 		// create two pipes and fork process

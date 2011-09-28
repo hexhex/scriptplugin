@@ -20,19 +20,28 @@
 namespace dlvhex {
   namespace script {
 
-	ScriptPlugin::ScriptPlugin() : activatePlugin(0), addToPath(""), converter(new ScriptConverter()) {
+	ScriptPlugin::ScriptPlugin() : addToPath(""), converter(new ScriptConverter()) {
     	
 		setNameVersion(PACKAGE_TARNAME, SCRIPTPLUGIN_MAJOR, SCRIPTPLUGIN_MINOR, SCRIPTPLUGIN_MICRO);
 	}
 
 
-	ScriptPlugin::~ScriptPlugin() {
-		converter.reset();
+	ScriptPlugin::~ScriptPlugin() { 
+	
 	}
 
 
-	std::vector<PluginAtomPtr> 
-	ScriptPlugin::createAtoms(ProgramCtx&) const {
+	PluginConverterPtr ScriptPlugin::createConverter(ProgramCtx& ctx) {
+		  
+		if (!converter->hasConverter()) {
+			PluginConverterPtr pc;
+			return pc;
+		}
+		return converter;
+	}
+	  
+	  
+	std::vector<PluginAtomPtr> ScriptPlugin::createAtoms(ProgramCtx&) const {
 		
 		std::vector<PluginAtomPtr> ret;
 		ret.push_back(PluginAtomPtr(new ScriptAtom, PluginPtrDeleter<PluginAtom>()));
@@ -40,8 +49,8 @@ namespace dlvhex {
 
 	}
 
-	void
-	ScriptPlugin::printUsage(std::ostream& out) {
+	
+	void ScriptPlugin::printUsage(std::ostream& out) {
 		
 		out << "Script-plugin: " << std::endl << std::endl;
 		out << " --convert=SCRIPT Specify script for converting the input" << std::endl;
@@ -50,35 +59,39 @@ namespace dlvhex {
 		return;
 	}
 
-	void
-	ScriptPlugin::processOptions(std::list<const char*>& pluginOptions, ProgramCtx& ctx) {
+	
+	void ScriptPlugin::processOptions(std::list<const char*>& pluginOptions, ProgramCtx& ctx) {
 
-		std::vector<std::string> convScript;
 		std::vector<std::list<const char*>::iterator> found;
 		std::string::size_type o;
 		std::string option;
     		
-		for (std::list<const char*>::iterator it = pluginOptions.begin(); it != pluginOptions.end(); it++) {
+		for (std::list<const char*>::iterator it = pluginOptions.begin(); 
+			 it != pluginOptions.end(); 
+			 it++) 
+		{
 
 			option.assign(*it);
         	o = option.find("--convert=");
         	if (o != std::string::npos) {
-           		//this->activatePlugin = 1;
-           		convScript.push_back(option.substr(10));
-           		converter->setConverter(convScript);
-           		found.push_back(it);
+
+           		converter->setConverter(option.substr(10));
+				found.push_back(it);
            		continue;
         	}
 
         	o = option.find("--addpath=");
         	if (o != std::string::npos) {
+				
            		this->addToPath = option.substr(10);
            		found.push_back(it);
            		continue;
         	}
     	}
 
-    	for (std::vector<std::list<const char*>::iterator>::const_iterator it = found.begin(); it != found.end(); ++it) 
+    	for (std::vector<std::list<const char*>::iterator>::const_iterator it = found.begin(); 
+			 it != found.end(); 
+			 ++it) 
 		{
         	pluginOptions.erase(*it);
     	}
@@ -97,19 +110,9 @@ namespace dlvhex {
 	}
 
 
-	PluginConverterPtr
-	ScriptPlugin::createConverter(ProgramCtx& ctx) {
-		
-		//if (!this->activatePlugin) {
-		if (!converter->hasConverter()) {
-			PluginConverterPtr pc;
-        	return pc;
-    	}
-		return converter;
-	}
-
-
 	ScriptPlugin theScriptPlugin;
+	
+	
 
   } // namespace script
 } // namespace dlvhex

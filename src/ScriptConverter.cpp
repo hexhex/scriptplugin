@@ -29,23 +29,21 @@ ScriptConverter::ScriptConverter() {
 
 
 void
-ScriptConverter::setConverter(const std::vector<std::string>& convScript) {
-
+ScriptConverter::setConverter(const std::string& convScript) {
     // set converter(script), which will be called to convert the input
-
-    this->scriptVector = convScript;
+    this->script = convScript;
 }
 	  
 bool
 ScriptConverter::hasConverter() {
-	return !this->scriptVector.empty();
+	return !this->script.empty();
 }
 
 
 void
 ScriptConverter::convert(std::istream& i, std::ostream& o) {
 
-    if (scriptVector.size() < 1) {
+    if (script.empty()) {
         throw PluginError("No converter-script given");
 
         // or maybe just pass the original input to the o-stream...
@@ -57,8 +55,7 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
 
     // we can add more than just the first element of scriptVector
 
-    const std::string command =
-      scriptVector.at(0) + " " + TEMP_FILE_NAME;
+    const std::string command = script + " " + TEMP_FILE_NAME;
 
     // create two pipes
 

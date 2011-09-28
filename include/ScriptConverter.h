@@ -22,19 +22,13 @@ namespace dlvhex {
 
 class ScriptConverter : public PluginConverter {
 public:
-    ScriptConverter();
-
-    void
-    setConverter(const std::vector<std::string>& convScript);
-	
-	bool
-	hasConverter();
-
-    virtual void
-    convert(std::istream& i, std::ostream& o);
+	ScriptConverter();
+    void setConverter(const std::string& convScript);
+	bool hasConverter();
+    virtual void convert(std::istream& i, std::ostream& o);
 
 private:
-    std::vector<std::string> scriptVector;
+    std::string script;
     void removeTempFile(std::ofstream& file);
 };
 

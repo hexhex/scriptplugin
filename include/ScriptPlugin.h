@@ -28,7 +28,7 @@ public:
 	void printUsage(std::ostream& o);
 
 private:
-    bool activatePlugin;
+    //bool activatePlugin;
     std::string addToPath;
 	boost::shared_ptr<ScriptConverter> converter;
 };
