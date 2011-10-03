@@ -39,6 +39,17 @@ all-local:
 	cp -ur $(top_srcdir)/examples/tests $(top_builddir)/examples/ ; \
 	cp -ur $(top_srcdir)/examples/lsdir $(top_builddir)/examples/
 
+distclean-local:
+	-if test "x$(top_srcdir)" != "x$(top_builddir)"; then \
+    for d in $(top_srcdir)/examples/*; do \
+      for f in $$d/*; do \
+        chmod u+w $(top_builddir)/examples/$$(basename $$d); \
+        chmod u+w $(top_builddir)/examples/$$(basename $$d)/$$(basename $$f); \
+        rm -f $(top_builddir)/examples/$$(basename $$d)/$$(basename $$f); \
+      done \
+    done \
+  fi
+
 # run the test script
 TESTS = $(top_srcdir)/testsuite/run-dlvhex-tests.sh
 
