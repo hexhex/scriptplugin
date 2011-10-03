@@ -21,7 +21,6 @@ EXTRA_DIST = \
 		 lsdir/file1 \
 		 lsdir/file2 \
 		 lsdir/file3 \
-	     tests/dlvhextests.test \
 	     tests/example1.out \
 	     tests/example2.out \
 	     tests/example3.out \
@@ -33,6 +32,13 @@ EXTRA_DIST = \
 		 ../testsuite/run-dlvhex-tests.sh \
 		 ../testsuite/answerset_compare.py
 
+
+# create test files in builddir s.t. we have all test files in builddir for checking
+all-local:
+	cp -ur $(top_srcdir)/examples/ex* $(top_builddir)/examples/ ; \
+	cp -ur $(top_srcdir)/examples/tests $(top_builddir)/examples/ ; \
+	cp -ur $(top_srcdir)/examples/lsdir $(top_builddir)/examples/
+
 # run the test script
 TESTS = $(top_srcdir)/testsuite/run-dlvhex-tests.sh
 
@@ -41,6 +47,6 @@ TESTS_ENVIRONMENT = \
 	TOP_SRCDIR=$(top_srcdir) \
 	DLVHEX="$(DLVHEX_BINDIR)/dlvhex -s --plugindir=$(top_builddir)/src --verbose=255" \
 	EXAMPLESDIR=$(top_srcdir)/examples \
-	TESTDIR=$(top_srcdir)/examples/tests 
+	TESTDIR=$(top_builddir)/examples/tests 
 
 

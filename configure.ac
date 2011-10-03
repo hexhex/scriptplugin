@@ -114,6 +114,7 @@ AC_CONFIG_FILES([
            src/Makefile
            include/Makefile
            examples/Makefile
+           examples/tests/dlvhextests.test
            examples/example3/conv1.py
 ],
 [
