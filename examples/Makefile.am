@@ -35,7 +35,7 @@ EXTRA_DIST = \
 
 # create test files in builddir s.t. we have all test files in builddir for checking
 all-local:
-	cp -ur $(top_srcdir)/examples/ex* $(top_builddir)/examples/ ; \
+	-cp -ur $(top_srcdir)/examples/ex* $(top_builddir)/examples/ ; \
 	cp -ur $(top_srcdir)/examples/tests $(top_builddir)/examples/ ; \
 	cp -ur $(top_srcdir)/examples/lsdir $(top_builddir)/examples/
 
