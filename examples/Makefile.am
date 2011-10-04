@@ -35,9 +35,11 @@ EXTRA_DIST = \
 
 # create test files in builddir s.t. we have all test files in builddir for checking
 all-local:
-	-cp -ur $(top_srcdir)/examples/ex* $(top_builddir)/examples/ ; \
-	cp -ur $(top_srcdir)/examples/tests $(top_builddir)/examples/ ; \
-	cp -ur $(top_srcdir)/examples/lsdir $(top_builddir)/examples/
+	-if test "x$(top_srcdir)" != "x$(top_builddir)"; then \
+    cp -ur $(top_srcdir)/examples/ex* $(top_builddir)/examples/ ; \
+	  cp -ur $(top_srcdir)/examples/tests $(top_builddir)/examples/ ; \
+	  cp -ur $(top_srcdir)/examples/lsdir $(top_builddir)/examples/ ; \
+  fi
 
 distclean-local:
 	-if test "x$(top_srcdir)" != "x$(top_builddir)"; then \
@@ -56,7 +58,7 @@ TESTS = $(top_srcdir)/testsuite/run-dlvhex-tests.sh
 # some variables for the test-script
 TESTS_ENVIRONMENT = \
 	TOP_SRCDIR=$(top_srcdir) \
-	DLVHEX="$(DLVHEX_BINDIR)/dlvhex -s --plugindir=$(top_builddir)/src --verbose=255" \
+	DLVHEX="$(DLVHEX_BINDIR)/dlvhex -s --plugindir=$(top_builddir)/src" \
 	EXAMPLESDIR=$(top_srcdir)/examples \
 	TESTDIR=$(top_builddir)/examples/tests 
 
