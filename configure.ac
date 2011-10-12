@@ -123,6 +123,7 @@ AC_CONFIG_FILES([
 		   examples/example2/int.py
 		   examples/example2/int.sh
            examples/example3/conv1.py
+		   examples/example3/ls.hex
 		   examples/example4/conv2.sh
 		   examples/example7/rename.py
 ],

@@ -1,1 +1,1 @@
-test(X) :- &script["ls lsdir"](X).
+test(X) :- &script["ls /Users/sabovits/Studium/Informatik_BSc/Projektpraktikum/dlvhex/dlvhex-scriptplugin/branches/release2x/examples/example3/lsdir"](X).
