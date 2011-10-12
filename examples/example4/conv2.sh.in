@@ -1,4 +1,4 @@
-#!/bin/bash
+#!@BASH@
 
 cat $1
 echo "convert(987)."

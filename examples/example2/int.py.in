@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!@PYTHON@
 
 print "12345"
 print "X2345"

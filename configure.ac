@@ -102,9 +102,11 @@ DX_PS_FEATURE([OFF])
 DX_INIT_DOXYGEN([dlvhex-scriptplugin], [doxygen.cfg], [doc])
 
 #
-# check for python (we need its path)
+# check for python, perl, and bash (we need their paths)
 #
 AC_PATH_PROG(PYTHON,[python], [AC_MSG_ERROR([Cannot find python!])])
+AC_PATH_PROG(PERL,[perl], [AC_MSG_ERROR([Cannot find perl!])])
+AC_PATH_PROG(BASH,[bash], [AC_MSG_ERROR([Cannot find bash!])])
 
 #
 # all needed makefiles
@@ -115,10 +117,24 @@ AC_CONFIG_FILES([
            include/Makefile
            examples/Makefile
            examples/tests/dlvhextests.test
+		   examples/example1/script.pl
+		   examples/example1/script.py
+		   examples/example1/script.sh
+		   examples/example2/int.py
+		   examples/example2/int.sh
            examples/example3/conv1.py
+		   examples/example4/conv2.sh
+		   examples/example7/rename.py
 ],
 [
+  chmod a+x examples/example1/script.pl
+  chmod a+x examples/example1/script.py
+  chmod a+x examples/example1/script.sh
+  chmod a+x examples/example2/int.py
+  chmod a+x examples/example2/int.sh
   chmod a+x examples/example3/conv1.py
+  chmod a+x examples/example4/conv2.sh
+  chmod a+x examples/example7/rename.py
 ])
 
 AC_OUTPUT
@@ -145,4 +161,6 @@ $PACKAGE_TARNAME $PACKAGE_VERSION configuration:
  prefix: $prefix
  plugindir: $plugindir
  python: $PYTHON
+ perl: $PERL
+ bash: $BASH
 EOF
