@@ -1,0 +1,1 @@
+test(X) :- &script["ls @abs_top_srcdir@/lsdir"](X).
