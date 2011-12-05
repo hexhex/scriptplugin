@@ -126,6 +126,8 @@ AC_CONFIG_FILES([
 		   examples/example3/ls.hex
 		   examples/example4/conv2.sh
 		   examples/example7/rename.py
+		   examples/example10/scripterror.sh
+		   examples/example12/converter.sh
 ],
 [
   chmod a+x examples/example1/script.pl
@@ -136,6 +138,8 @@ AC_CONFIG_FILES([
   chmod a+x examples/example3/conv1.py
   chmod a+x examples/example4/conv2.sh
   chmod a+x examples/example7/rename.py
+  chmod a+x examples/example10/scripterror.sh
+  chmod a+x examples/example12/converter.sh
 ])
 
 AC_OUTPUT
