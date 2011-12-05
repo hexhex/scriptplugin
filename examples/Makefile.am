@@ -12,6 +12,13 @@ EXTRA_DIST = \
 	     example4/conv2.sh \
 	     example7/input.hex \
 	     example7/rename.py \
+		 example9/scriptnotfound.hex \
+		 example10/scripterror.hex \
+		 example10/scripterror.sh \
+		 example11/missingconverter.hex \
+		 example12/convertererror.hex \
+		 example12/converter.sh \
+		 example13/somescript.hex \
 		 lsdir/file1 \
 		 lsdir/file2 \
 		 lsdir/file3 \
@@ -20,9 +27,13 @@ EXTRA_DIST = \
 	     tests/example3.out \
 	     tests/example4.out \
 	     tests/example7.out \
+	 	 tests/example9.stderr \
+		 tests/example10.stderr \
+		 tests/example11.stderr \
+		 tests/example12.stderr \
+		 tests/example13.out \
 		 ../testsuite/run-dlvhex-tests.sh \
 		 ../testsuite/answerset_compare.py
-
 
 # run the test script
 TESTS = $(top_srcdir)/testsuite/run-dlvhex-tests.sh
