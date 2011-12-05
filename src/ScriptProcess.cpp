@@ -16,25 +16,34 @@ namespace dlvhex {
 		delete opipe;
 	}
 
-	std::ostream& ScriptProcess::execute(const std::string &c, std::istream& in) throw (PluginError) {
-
-		std::vector<std::string> args;
-		args.push_back(c);
+	std::stringstream& ScriptProcess::execute(const std::vector<std::string> &args, std::istream &in) throw (PluginError) {
 
 		proc.open(args); 
 		*ipipe << in.rdbuf(); 
 		proc.endoffile(); 
 
-		int status = proc.close();
+		// copy content of opipe->rdbuf() to own streambuf	
+		std::streambuf *backup = opipe->rdbuf();
+		char ch;
+		std::string content;
+		do {
+			ch = backup->sgetc();
+			content.push_back(ch);
+		} while (backup->snextc() != EOF);
+		
+		std::stringstream out;
+		out.str(content);
+
+		int status = proc.close(); // this closes ipipe and opipe
 
 		if (status == 0) {
 
-			return *opipe;
+			return out;
 
 		} else {
 			std::stringstream s;
 			s << "Error executing script, called by " << parent << ": ";
-			s << opipe;
+			s << out;
 			s << "(exit status " << status << ") ";
 			if (status == 127) {
 				s << "(maybe you want to use the --addpath option)";

@@ -41,7 +41,7 @@ ScriptConverter::hasConverter() {
 
 
 void
-ScriptConverter::convert(std::istream& i, std::ostream& o) {
+ScriptConverter::convert(std::istream& in, std::ostream& out) {
 
     if (script.empty()) {
         throw PluginError("No converter-script given");
@@ -55,8 +55,19 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
 
     // we can add more than just the first element of scriptVector
 
-    const std::string command = script + " " + TEMP_FILE_NAME;
+    std::string command = script + " " + TEMP_FILE_NAME;
 
+	ScriptProcess cp("ScriptConverter");
+
+	std::vector<std::string> args;
+	//args.push_back("/bin/sh");
+	args.push_back("sh");
+	args.push_back("-c");
+	args.push_back(command.c_str());
+
+	std::stringstream &out_temp = cp.execute(args, in);
+
+/*
     // create two pipes
 
     int stdoutpipe[2];
@@ -78,7 +89,7 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
     signal(SIGINT, removeTempFile);
     signal(SIGQUIT, removeTempFile);
     */
-
+/*
 
     // create a temporary file and save the istream i in it
 
@@ -205,7 +216,9 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
                     while (::fgets(puffer, PIPE_BUF, reading)) {
                         o << puffer << std::endl;
                     }
-
+*/
+	out << out_temp << std::endl;
+/*
                     if (::ferror(reading)) {
                         ScriptConverter::removeTempFile(file);
                         throw PluginError("Error while reading from pipe");
@@ -236,9 +249,10 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
     }
 
     ScriptConverter::removeTempFile(file);
+*/
 }
 
-
+/*
 void
 ScriptConverter::removeTempFile(std::ofstream& file) {
 
@@ -250,6 +264,6 @@ ScriptConverter::removeTempFile(std::ofstream& file) {
         }
     }
 }
-
+*/
   } // namespace script
 } // namespace dlvhex

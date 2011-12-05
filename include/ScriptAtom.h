@@ -12,6 +12,7 @@
 #define _DLVHEX_SCRIPTATOM_H
 
 #include <dlvhex/PluginInterface.h>
+#include "ScriptProcess.h"
 
 namespace dlvhex {
   namespace script {

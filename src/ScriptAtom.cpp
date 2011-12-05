@@ -38,9 +38,23 @@ namespace dlvhex {
 	void ScriptAtom::retrieve(const Query& query, Answer& answer) throw (PluginError) {
 		
 		Registry &registry = *getRegistry();
-		std::string in = registry.terms.getByID(query.input[0]).getUnquotedString();
-		std::vector<Tuple> out;
+		std::string command = registry.terms.getByID(query.input[0]).getUnquotedString();
+		std::vector<Tuple> tuples;
 
+		ScriptProcess cp("ScriptAtom");
+
+		std::stringstream in;
+		in.str("");
+
+		std::vector<std::string> args;
+		//args.push_back("/bin/sh");
+		args.push_back("sh");
+		args.push_back("-c");
+		args.push_back(command.c_str());
+
+		std::stringstream &out = cp.execute(args, in);
+
+/*
 		// create two pipes and fork process
     	int stdoutpipe[2];
 		int stderrpipe[2];
@@ -125,7 +139,8 @@ namespace dlvhex {
 
            		if (WIFEXITED(status)) {
 					if (WEXITSTATUS(status) == 0) {
-
+*/
+/*
 						FILE *reading;
                     	char puffer[PIPE_BUF];
 
@@ -134,9 +149,9 @@ namespace dlvhex {
                     	if ((reading = ::fdopen(stdoutpipe[0], "r")) == (FILE *) NULL) {
                         	throw PluginError("Error while opening pipe for reading");
                     	}
-
+*/
                     	bool isInt = true;
-
+/*
                     	// what we read from the pipe stream is the result, which was
                     	// printed to stdout, from the script that we executed in the
                     	// ChildProcess
@@ -146,31 +161,52 @@ namespace dlvhex {
                			while (::fgets(puffer, PIPE_BUF, reading)) {
 
 							puffer[::strlen(puffer)-1] = '\0';
-
+*/
                         	Tuple tuple;
 
                         	// test if every character is a digit
-
+/*
                         	for (int i=0; i<(::strlen(puffer)-1); i++) {
 								if (!::isdigit(puffer[i])) {
 									isInt = false;
 								}
                         	}
+*/
+							// SABINE
+		LOG(DBG, "ScriptAtom::retrieve -- sabine2");
+							//std::streambuf *buf = out.rdbuf();
+		LOG(DBG, "ScriptAtom::retrieve -- sabine2a");
+							std::string content = out.str();
+							char ch;
+							for (int i=0; i<content.length(); i++) {
+								ch = content.at(i);
+								if (!::isdigit(ch)) 
+									isInt = false;
+							}
+							//do {
+		LOG(DBG, "ScriptAtom::retrieve -- sabine2b");
+							//	ch = buf->sgetc();
+		LOG(DBG, "ScriptAtom::retrieve -- sabine2c");
+							//	content.push_back(ch);
+							//	if (!::isdigit(ch)) {
+							//		isInt = false;
+							//	}
+							//} while (buf->snextc() != EOF); 
 							
+		LOG(DBG, "ScriptAtom::retrieve -- sabine3");
                         	if (isInt) {
-								Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_INTEGER, puffer);
+								Term newterm(ID::MAINKIND_TERM | ID::SUBKIND_TERM_INTEGER, content.c_str());
 								tuple.push_back(registry.storeTerm(newterm));
 							} else {
-								std::string termsymbol(puffer);
-								Term newterm(ID::MAINKIND_TERM, '"'+termsymbol+'"');
+								Term newterm(ID::MAINKIND_TERM, '"'+content+'"');
 								tuple.push_back(registry.storeTerm(newterm));
                         	}
 
                         	// we just create "single tuples"
                         	// (each tuple has only one term)
-
-                        	out.push_back(tuple);
-						}
+		LOG(DBG, "ScriptAtom::retrieve -- sabine4");
+                        	tuples.push_back(tuple);
+/*						}
 
                     	if (::ferror(reading)) {
                         	throw PluginError("Error while reading from pipe");
@@ -193,15 +229,17 @@ namespace dlvhex {
                   		throw PluginError(s.str());
                 	}
 				}
-
-				//answer.get().push_back(out);
-				for (unsigned int i=0; i<out.size(); i++) {
-					answer.get().push_back(out[i]);
+*/				
+		LOG(DBG, "ScriptAtom::retrieve -- sabine5");
+				//answer.get().push_back(tuples);
+				for (unsigned int i=0; i<tuples.size(); i++) {
+					answer.get().push_back(tuples[i]);
 				}
-
+/*
             	break;
 			}
 		}
+*/
 	}
 
   } // namespace script
