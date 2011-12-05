@@ -51,6 +51,7 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
     }
 
     // store in into temp file
+    #warning TODO dynamically create temp file (plus name) using mkstemp
     std::ofstream file(TEMP_FILE_NAME);
     std::string s;
 
@@ -261,22 +262,14 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
         }
     }
 
-    ScriptConverter::removeTempFile(file);
 */
-}
-
-/*
-void
-ScriptConverter::removeTempFile(std::ofstream& file) {
-
     // remove the temporary file, if it is open
-
     if (file.is_open()) {
         if (std::remove(TEMP_FILE_NAME) != 0) {
             throw PluginError("Error while deleting temp-file");
         }
     }
 }
-*/
+
   } // namespace script
 } // namespace dlvhex
