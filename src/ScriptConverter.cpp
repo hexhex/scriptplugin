@@ -50,6 +50,18 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
         // o = i; return;
     }
 
+    // store in into temp file
+    std::ofstream file(TEMP_FILE_NAME);
+    std::string s;
+
+    if (!file.is_open()) {
+        throw PluginError("Error while creating temp-file");
+    }
+
+    while (std::getline(in, s, '\n')) {
+        file << s << std::endl;
+    }
+
     // the command, which will be executed, consists of the script
     // and the temporary file (containing the istream i) as argument
 
@@ -65,7 +77,8 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
 	args.push_back("-c");
 	args.push_back(command.c_str());
 
-	std::stringstream &out_temp = cp.execute(args, in);
+  std::istringstream dummyin;
+	std::stringstream &out_temp = cp.execute(args, dummyin);
 
 /*
     // create two pipes
@@ -217,7 +230,7 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
                         o << puffer << std::endl;
                     }
 */
-	out << out_temp << std::endl;
+	out << out_temp.str();
 /*
                     if (::ferror(reading)) {
                         ScriptConverter::removeTempFile(file);
