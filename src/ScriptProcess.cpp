@@ -31,7 +31,6 @@ namespace dlvhex {
 			content.push_back(ch);
 		} while (backup->snextc() != EOF);
 		
-		std::stringstream out;
 		out.str(content);
 
 		int status = proc.close(); // this closes ipipe and opipe
