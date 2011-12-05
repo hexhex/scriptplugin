@@ -1,10 +1,10 @@
 example1/script.hex example1.out --addpath=@abs_top_srcdir@/examples/example1
 example2/int.hex example2.out --addpath=@abs_top_srcdir@/examples/
-@abs_top_builddir@/examples/example3/ls.hex example3.out --convert=@abs_top_srcdir@/examples/example3/conv1.py
-example4/conv2.hex example4.out --convert=@abs_top_srcdir@/examples/example4/conv2.sh --addpath=@abs_top_srcdir@/examples/example4
-example7/input.hex example7.out --convert=@abs_top_srcdir@/examples/example7/rename.py
+@abs_top_builddir@/examples/example3/ls.hex example3.out --convert=@abs_top_builddir@/examples/example3/conv1.py
+example4/conv2.hex example4.out --convert=@abs_top_builddir@/examples/example4/conv2.sh --addpath=@abs_top_builddir@/examples/example4
+example7/input.hex example7.out --convert=@abs_top_builddir@/examples/example7/rename.py
 example9/scriptnotfound.hex example9.stderr
-example10/scripterror.hex example10.stderr --addpath=@abs_top_srcdir@/examples/example10
-example11/missingconverter.hex example11.stderr --convert=@abs_top_srcdir@/examples/example11/idontexist.sh
-example12/convertererror.hex example12.stderr --convert=@abs_top_srcdir@/examples/example12/converter.sh
+example10/scripterror.hex example10.stderr --addpath=@abs_top_builddir@/examples/example10
+example11/missingconverter.hex example11.stderr --convert=examples/example11/idontexist.sh
+example12/convertererror.hex example12.stderr --convert=@abs_top_builddir@/examples/example12/converter.sh
 example13/somescript.hex example13.out --convert=
