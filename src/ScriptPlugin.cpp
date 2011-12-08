@@ -21,7 +21,6 @@ namespace dlvhex {
   namespace script {
 
 	ScriptPlugin::ScriptPlugin() : addToPath(""), converter(new ScriptConverter()) {
-    	
 		setNameVersion(PACKAGE_TARNAME, SCRIPTPLUGIN_MAJOR, SCRIPTPLUGIN_MINOR, SCRIPTPLUGIN_MICRO);
 	}
 

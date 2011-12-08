@@ -16,7 +16,8 @@ namespace dlvhex {
 		delete opipe;
 	}
 
-	std::stringstream& ScriptProcess::execute(const std::vector<std::string> &args, std::istream &in) throw (PluginError) {
+	std::stringstream& ScriptProcess::execute(const std::vector<std::string> &args, 
+											std::istream &in) throw (PluginError) {
 
 		proc.open(args); 
 		*ipipe << in.rdbuf(); 
@@ -29,7 +30,8 @@ namespace dlvhex {
 		do {
 			ch = backup->sgetc();
 			content.push_back(ch);
-		} while (backup->snextc() != EOF);
+		}
+		while (backup->snextc() != EOF);
 		
 		out.str(content);
 

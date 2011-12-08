@@ -31,7 +31,6 @@ public:
 
 private:
     std::string script;
-    //void removeTempFile(std::ofstream& file);
 };
 
   } // namespace script

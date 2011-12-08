@@ -22,7 +22,7 @@ namespace dlvhex {
 	ProcessBuf proc;
 	std::iostream *ipipe;
 	std::iostream *opipe;
-  std::stringstream out;
+  	std::stringstream out;
   };
 
  }
