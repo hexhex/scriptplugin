@@ -49,10 +49,18 @@ AC_PROG_LIBTOOL
 #
 # of course we need dlvhex itself!
 #
-PKG_CHECK_MODULES([DLVHEX], [dlvhex >= 2.0])
-_PKG_CONFIG([DLVHEX_USERPLUGINDIR], [variable=userplugindir], [dlvhex >= 2.0])
-_PKG_CONFIG([DLVHEX_SYSPLUGINDIR], [variable=sysplugindir], [dlvhex >= 2.0])
-_PKG_CONFIG([DLVHEX_BINDIR], [variable=bindir], [dlvhex >= 2.0])
+AC_ARG_WITH([dlvhex2],
+   [AS_HELP_STRING([--with-dlvhex2=DIR],
+                   [prefix of where you installed dlvhex2 >= 2.0])])
+if test "x$with_dlvhex2" != "x"; then
+  export PKG_CONFIG_PATH="${with_dlvhex2}lib/pkgconfig/"
+  AC_SUBST([DISTCHECK_CONFIGURE_FLAGS],
+           ["$DISTCHECK_CONFIGURE_FLAGS --with-dlvhex2=${with_dlvhex2}"])
+fi
+PKG_CHECK_MODULES([DLVHEX], [dlvhex2 >= 2.0])
+_PKG_CONFIG([DLVHEX_USERPLUGINDIR], [variable=userplugindir], [dlvhex2 >= 2.0])
+_PKG_CONFIG([DLVHEX_SYSPLUGINDIR], [variable=sysplugindir], [dlvhex2 >= 2.0])
+_PKG_CONFIG([DLVHEX_BINDIR], [variable=bindir], [dlvhex2 >= 2.0])
 DLVHEX_USERPLUGINDIR=$pkg_cv_DLVHEX_USERPLUGINDIR
 DLVHEX_SYSPLUGINDIR=$pkg_cv_DLVHEX_SYSPLUGINDIR
 DLVHEX_BINDIR=$pkg_cv_DLVHEX_BINDIR
@@ -62,7 +70,7 @@ AC_SUBST(DLVHEX_BINDIR)
 
 SAVE_CPPFLAGS="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $DLVHEX_CFLAGS"
-AC_CHECK_HEADER([dlvhex/OnlineModelBuilder.hpp],,[AC_MSG_ERROR([Cannot find dlvhex headers!])])
+AC_CHECK_HEADER([dlvhex2/OnlineModelBuilder.hpp],,[AC_MSG_ERROR([Cannot find dlvhex2 headers!])])
 CPPFLAGS="$SAFE_CPPFLAGS"
 
 # where the plugin will be installed by default.
@@ -112,22 +120,23 @@ AC_PATH_PROG(BASH,[bash], [AC_MSG_ERROR([Cannot find bash!])])
 # all needed makefiles
 #
 AC_CONFIG_FILES([
-           Makefile 
-           src/Makefile
-           include/Makefile
-           examples/Makefile
-           examples/tests/dlvhextests.test
-		   examples/example1/script.pl
-		   examples/example1/script.py
-		   examples/example1/script.sh
-		   examples/example2/int.py
-		   examples/example2/int.sh
-           examples/example3/conv1.py
-		   examples/example3/ls.hex
-		   examples/example4/conv2.sh
-		   examples/example7/rename.py
-		   examples/example10/scripterror.sh
-		   examples/example12/converter.sh
+  Makefile 
+  src/Makefile
+  include/Makefile
+  examples/Makefile
+  examples/tests/scriptplugin.test
+  examples/example1/script.pl
+  examples/example1/script.py
+  examples/example1/script.sh
+  examples/example2/int.py
+  examples/example2/int.sh
+  examples/example3/conv1.py
+  examples/example3/ls.hex
+  examples/example4/conv2.sh
+  examples/example7/rename.py
+  examples/example10/scripterror.sh
+  examples/example12/converter.sh
+  testsuite/Makefile
 ],
 [
   chmod a+x examples/example1/script.pl

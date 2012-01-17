@@ -55,8 +55,11 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
 	std::ofstream file(TEMP_FILE_NAME);
 	std::string s;
 
-	if (!file.is_open()) {
-		throw PluginError("Error while creating temp-file");
+	if (!file.is_open())
+  {
+    std::ostringstream os;
+    os << "Error while creating temp-file '" << TEMP_FILE_NAME << "'";
+		throw PluginError(os.str());
 	}
 
 	while (std::getline(in, s, '\n')) {
@@ -84,8 +87,11 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
 
 	// remove the temporary file, if it is open
 	if (file.is_open()) {
-		if (std::remove(TEMP_FILE_NAME) != 0) {
-			throw PluginError("Error while deleting temp-file");
+		if (std::remove(TEMP_FILE_NAME) != 0)
+    {
+      std::ostringstream os;
+      os << "Error while deleting temp-file '" << TEMP_FILE_NAME << "'";
+      throw PluginError(os.str());
 		}
 	}
 }

@@ -11,7 +11,7 @@
 #if !defined(_DLHVEX_SCRIPTCONVERTER_H)
 #define _DLVHEX_SCRIPTCONVERTER_H
 
-#include <dlvhex/PluginInterface.h>
+#include <dlvhex2/PluginInterface.h>
 #include <fstream>
 
 #include "ScriptProcess.h"

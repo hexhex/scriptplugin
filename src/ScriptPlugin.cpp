@@ -13,6 +13,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include "ScriptPlugin.h"
+#include <dlvhex2/Logger.hpp>
 
 #include <cstdlib>
 
@@ -104,6 +105,7 @@ namespace dlvhex {
 				path = this->addToPath;
 			else 
 				path = this->addToPath + ":" + path;
+            LOG(INFO,"setting PATH to '" << path << "'");
 			::setenv("PATH", path.c_str(), 1);
     	}
 	}
@@ -116,18 +118,11 @@ namespace dlvhex {
   } // namespace script
 } // namespace dlvhex
 
-//extern "C"
-//dlvhex::script::ScriptPlugin*
-//PLUGINIMPORTFUNCTION() {
-//  dlvhex::script::theScriptPlugin.setPluginName(PACKAGE_TARNAME);
-//  dlvhex::script::theScriptPlugin.setVersion(SCRIPTPLUGIN_MAJOR,
-//					     SCRIPTPLUGIN_MINOR,
-//					     SCRIPTPLUGIN_MICRO);
-
-//  return &dlvhex::script::theScriptPlugin;
-//}
+IMPLEMENT_PLUGINVERSIONFUNCTION(SCRIPTPLUGIN_MAJOR,SCRIPTPLUGIN_MINOR,SCRIPTPLUGIN_MICRO);
 
 extern "C"
 void *PLUGINIMPORTFUNCTION() {
 	return reinterpret_cast<void*>(& dlvhex::script::theScriptPlugin);
 }
+
+// vim:ts=4:

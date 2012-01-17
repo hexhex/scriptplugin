@@ -13,8 +13,8 @@
 #endif /* HAVE_CONFIG_H */
 
 #include "ScriptAtom.h"
-#include "dlvhex/Registry.hpp"
-#include "dlvhex/Term.hpp"
+#include "dlvhex2/Registry.hpp"
+#include "dlvhex2/Term.hpp"
 
 #include <unistd.h>
 #include <cstdio>
