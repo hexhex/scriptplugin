@@ -1,0 +1,12 @@
+#!@PYTHON@
+
+import sys
+	
+print 'python("converted").'
+
+f = file(sys.argv[1])
+lines = f.readlines();
+f.close()
+
+for line in lines:
+	print line

@@ -12,16 +12,15 @@
 #define _DLVHEX_SCRIPTATOM_H
 
 #include <dlvhex/PluginInterface.h>
+#include "ScriptProcess.h"
 
 namespace dlvhex {
   namespace script {
 
 class ScriptAtom : public PluginAtom {
 public:
-    ScriptAtom();
-
-    void
-    retrieve(const Query& query, Answer& answer) throw (PluginError);
+	ScriptAtom();
+	void retrieve(const Query& query, Answer& answer) throw (PluginError);
 };
 
   } // namespace script

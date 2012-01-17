@@ -1,4 +1,4 @@
-#!/bin/bash
+#!@BASH@
 
 echo "12345"
 echo "X2345"

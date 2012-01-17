@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!@PYTHON@
 
 print "python 1"
 print "python 2"

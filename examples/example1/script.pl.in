@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!@PERL@
 
 print "perl 1\n";
 print "perl 2\n";

@@ -14,6 +14,8 @@
 #include <dlvhex/PluginInterface.h>
 #include <fstream>
 
+#include "ScriptProcess.h"
+
 ///@todo use mkstemp instead of the technique currently used
 #define TEMP_FILE_NAME "/tmp/dlvhex_conv.tmp"
 
@@ -22,17 +24,13 @@ namespace dlvhex {
 
 class ScriptConverter : public PluginConverter {
 public:
-    ScriptConverter();
-
-    void
-    setConverter(const std::vector<std::string>& convScript);
-
-    virtual void
-    convert(std::istream& i, std::ostream& o);
+	ScriptConverter();
+    void setConverter(const std::string& convScript);
+	bool hasConverter();
+    virtual void convert(std::istream& i, std::ostream& o);
 
 private:
-    std::vector<std::string> scriptVector;
-    void removeTempFile(std::ofstream& file);
+    std::string script;
 };
 
   } // namespace script

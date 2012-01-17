@@ -22,15 +22,14 @@ class ScriptPlugin : public PluginInterface {
 public:
     ScriptPlugin();
     ~ScriptPlugin();
-    PluginConverter* createConverter();
-    void getAtoms(AtomFunctionMap& m);
-    void setOptions(bool doHelp, std::vector<std::string>& argv,
-                    std::ostream& out);
+    PluginConverterPtr createConverter(ProgramCtx& ctx);
+	std::vector<PluginAtomPtr> createAtoms(ProgramCtx&) const;
+    void processOptions(std::list<const char*>& pluginOptions, ProgramCtx& ctx);
+	void printUsage(std::ostream& o);
 
 private:
-    bool activatePlugin;
     std::string addToPath;
-    ScriptConverter* converter;
+	boost::shared_ptr<ScriptConverter> converter;
 };
 
   } // namespace script
