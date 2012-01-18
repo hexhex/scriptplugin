@@ -14,9 +14,6 @@
 #include <dlvhex/PluginInterface.h>
 #include <fstream>
 
-///@todo use mkstemp instead of the technique currently used
-#define TEMP_FILE_NAME "/tmp/dlvhex_conv.tmp"
-
 namespace dlvhex {
   namespace script {
 
@@ -32,7 +29,7 @@ public:
 
 private:
     std::vector<std::string> scriptVector;
-    void removeTempFile(std::ofstream& file);
+    void removeTempFile(const std::string& fname);
 };
 
   } // namespace script

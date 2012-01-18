@@ -17,6 +17,9 @@
 #include <climits>
 #include <sstream>
 #include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cerrno>
 
 #include <sys/wait.h>
 
@@ -52,8 +55,10 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
 
     // we can add more than just the first element of scriptVector
 
+    std::string tmpfilename(::tmpnam(NULL));
+
     const std::string command =
-      scriptVector.at(0) + " " + TEMP_FILE_NAME;
+      scriptVector.at(0) + " " + tmpfilename;
 
     // create two pipes
 
@@ -70,17 +75,9 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
         throw PluginError("Error while creating pipe");
     }
 
-    /* maybe handle interrupts:
-
-    signal(SIGTERM, removeTempFile);
-    signal(SIGINT, removeTempFile);
-    signal(SIGQUIT, removeTempFile);
-    */
-
-
     // create a temporary file and save the istream i in it
 
-    std::ofstream file(TEMP_FILE_NAME);
+    std::ofstream file(tmpfilename.c_str());
     std::string s;
 
     if (!file.is_open()) {
@@ -97,7 +94,7 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
 
         case -1:
         {
-            ScriptConverter::removeTempFile(file);
+            ScriptConverter::removeTempFile(tmpfilename);
             throw PluginError("Error while forking process");
             break;
         }
@@ -108,32 +105,32 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
             //               close pipe-ends and execute the command
 
             if (::dup2(stdoutpipe[1], STDOUT_FILENO) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while duplicating pipe-end");
             }
 
             if (::dup2(stderrpipe[1], STDERR_FILENO) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while duplicating pipe-end");
             }
 
             if (::close(stdoutpipe[0]) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while closing pipe-end");
             }
 
             if (::close(stdoutpipe[1]) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while closing pipe-end");
             }
 
             if (::close(stderrpipe[0]) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while closing pipe-end");
             }
 
             if (::close(stderrpipe[1]) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while closing pipe-end");
             }
 
@@ -141,11 +138,11 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
             //                     interpreted as input."
 
             if (::execlp("/bin/sh", "sh", "-c", command.c_str(), (char *) 0) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while executing command");
             }
 
-            ScriptConverter::removeTempFile(file);
+            ScriptConverter::removeTempFile(tmpfilename);
             throw PluginError("Error while executing command");
             break;
         }
@@ -155,24 +152,24 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
             // FatherProcess: close pipe-ends we dont
 
             if (::close(stdoutpipe[1]) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while closing pipe-end");
             }
 
             if (::close(stderrpipe[0]) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while closing pipe-end");
             }
 
             if (::close(stderrpipe[1]) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while closing pipe-end");
             }
 
             // wait until ChildProcess terminates
 
             if (::waitpid(pid, &status, 0) < 0) {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 throw PluginError("Error while waiting on child-process");
             }
 
@@ -187,7 +184,7 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
                     char puffer[PIPE_BUF];
 
                     if ((reading = ::fdopen(stdoutpipe[0], "r")) == (FILE *) NULL) {
-                        ScriptConverter::removeTempFile(file);
+                        ScriptConverter::removeTempFile(tmpfilename);
                         throw PluginError("Error while opening pipe for reading");
                     }
 
@@ -205,19 +202,19 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
                     }
 
                     if (::ferror(reading)) {
-                        ScriptConverter::removeTempFile(file);
+                        ScriptConverter::removeTempFile(tmpfilename);
                         throw PluginError("Error while reading from pipe");
                     }
 
                     // close the pipe stream
 
                     if (::fclose(reading) == EOF) {
-                        ScriptConverter::removeTempFile(file);
+                        ScriptConverter::removeTempFile(tmpfilename);
                         throw PluginError("Error while closing pipe-stream");
                     }
                 }
             } else {
-                ScriptConverter::removeTempFile(file);
+                ScriptConverter::removeTempFile(tmpfilename);
                 std::stringstream s;
                 s << "Error executing '/bin/sh -c " << command << "'";
 #                 ifdef _GNU_SOURCE
@@ -233,20 +230,16 @@ ScriptConverter::convert(std::istream& i, std::ostream& o) {
         }
     }
 
-    ScriptConverter::removeTempFile(file);
+    ScriptConverter::removeTempFile(tmpfilename);
 }
 
 
 void
-ScriptConverter::removeTempFile(std::ofstream& file) {
-
-    // remove the temporary file, if it is open
-
-    if (file.is_open()) {
-        if (std::remove(TEMP_FILE_NAME) != 0) {
-            throw PluginError("Error while deleting temp-file");
-        }
-    }
+ScriptConverter::removeTempFile(const std::string& fname) {
+  if( ::remove(fname.c_str()) )
+  {
+    throw PluginError("Error while deleting temp-file: " + std::string(::strerror(errno)));
+  }
 }
 
   } // namespace script

@@ -1,3 +1,9 @@
+2012-01-18  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	* include/ScriptConverter.h: Using tmpnam() instead of
+	fixed temporary file name.
+	* src/ScriptConverter.cpp: Likewise.
+
 2010-07-18  Thomas Krennwallner  <tkren@kr.tuwien.ac.at>
 
 	Release version 1.7.1.
