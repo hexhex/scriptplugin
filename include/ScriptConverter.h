@@ -16,9 +16,6 @@
 
 #include "ScriptProcess.h"
 
-///@todo use mkstemp instead of the technique currently used
-#define TEMP_FILE_NAME "/tmp/dlvhex_conv.tmp"
-
 namespace dlvhex {
   namespace script {
 
