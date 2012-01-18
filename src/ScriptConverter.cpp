@@ -89,7 +89,7 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
 	out << out_temp.str();
 
 	// remove the temporary file
-  if( ::remove(tmpfilename) != 0)
+  if( ::remove(tmpfilename.c_str()) != 0)
   {
     std::ostringstream os;
     os << "Error while deleting temp-file '" <<
