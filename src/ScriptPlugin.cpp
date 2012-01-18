@@ -13,6 +13,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include "ScriptPlugin.h"
+#include <dlvhex2/PluginInterface.h>
 #include <dlvhex2/Logger.hpp>
 
 #include <cstdlib>
