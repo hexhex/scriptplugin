@@ -1,3 +1,10 @@
+2012-01-19  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	* src/ScriptPlugin.cpp: Adapting to header file name changes.
+	* src/ScriptAtom.cpp: Likewise.
+	* configure.ac: Likewise and using new dlvhex2.m4.
+	* m4/dlvhex2.m4: Likewise.
+
 2012-01-18  Peter Schueller  <ps@kr.tuwien.ac.at>
 
 	* include/ScriptConverter.h: Using tmpnam() instead of

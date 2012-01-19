@@ -14,7 +14,7 @@
 
 #include "ScriptPlugin.h"
 #include <dlvhex2/PluginInterface.h>
-#include <dlvhex2/Logger.hpp>
+#include <dlvhex2/Logger.h>
 
 #include <cstdlib>
 
