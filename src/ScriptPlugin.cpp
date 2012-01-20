@@ -23,7 +23,7 @@ namespace dlvhex {
   namespace script {
 
 	ScriptPlugin::ScriptPlugin() : addToPath(""), converter(new ScriptConverter()) {
-		setNameVersion(PACKAGE_TARNAME, SCRIPTPLUGIN_MAJOR, SCRIPTPLUGIN_MINOR, SCRIPTPLUGIN_MICRO);
+		setNameVersion(PACKAGE_TARNAME, SCRIPTPLUGIN_VERSION_MAJOR, SCRIPTPLUGIN_VERSION_MINOR, SCRIPTPLUGIN_VERSION_MICRO);
 	}
 
 
@@ -119,7 +119,7 @@ namespace dlvhex {
   } // namespace script
 } // namespace dlvhex
 
-IMPLEMENT_PLUGINVERSIONFUNCTION(SCRIPTPLUGIN_MAJOR,SCRIPTPLUGIN_MINOR,SCRIPTPLUGIN_MICRO);
+IMPLEMENT_PLUGINABIVERSIONFUNCTION
 
 extern "C"
 void *PLUGINIMPORTFUNCTION() {
