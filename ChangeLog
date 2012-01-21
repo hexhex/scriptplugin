@@ -2,8 +2,8 @@
 
 	* src/ScriptPlugin.cpp: Adapting to header file name changes.
 	* src/ScriptAtom.cpp: Likewise.
-	* configure.ac: Likewise and using new dlvhex2.m4.
-	* m4/dlvhex2.m4: Likewise.
+	* configure.ac: Likewise and using new dlvhex.m4.
+	* m4/dlvhex.m4: Likewise.
 
 2012-01-18  Peter Schueller  <ps@kr.tuwien.ac.at>
 
