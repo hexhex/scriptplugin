@@ -13,7 +13,7 @@
 
 #include "ScriptAtom.h"
 #include "ScriptConverter.h"
-#include <dlvhex/PluginInterface.h>
+#include <dlvhex2/PluginInterface.h>
 
 namespace dlvhex {
   namespace script {

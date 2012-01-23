@@ -11,7 +11,7 @@
 #if !defined(_DLVHEX_SCRIPTATOM_H)
 #define _DLVHEX_SCRIPTATOM_H
 
-#include <dlvhex/PluginInterface.h>
+#include <dlvhex2/PluginInterface.h>
 #include "ScriptProcess.h"
 
 namespace dlvhex {

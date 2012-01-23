@@ -17,6 +17,9 @@
 #include <climits>
 #include <sstream>
 #include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cerrno>
 
 #include <sys/wait.h>
 
@@ -51,12 +54,15 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
 	}
 
 	// store in into temp file
-	#warning TODO dynamically create temp file (plus name) using mkstemp
-	std::ofstream file(TEMP_FILE_NAME);
+  std::string tmpfilename(::tmpnam(NULL));
+	std::ofstream file(tmpfilename.c_str());
 	std::string s;
 
-	if (!file.is_open()) {
-		throw PluginError("Error while creating temp-file");
+	if (!file.is_open())
+  {
+    std::ostringstream os;
+    os << "Error while creating temp-file '" << tmpfilename << "'";
+		throw PluginError(os.str());
 	}
 
 	while (std::getline(in, s, '\n')) {
@@ -68,7 +74,7 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
 
 	// we can add more than just the first element of scriptVector
 
-	std::string command = script + " " + TEMP_FILE_NAME;
+	std::string command = script + " " + tmpfilename;
 
 	ScriptProcess cp("ScriptConverter");
 
@@ -82,12 +88,15 @@ ScriptConverter::convert(std::istream& in, std::ostream& out) {
 
 	out << out_temp.str();
 
-	// remove the temporary file, if it is open
-	if (file.is_open()) {
-		if (std::remove(TEMP_FILE_NAME) != 0) {
-			throw PluginError("Error while deleting temp-file");
-		}
-	}
+	// remove the temporary file
+  if( ::remove(tmpfilename.c_str()) != 0)
+  {
+    std::ostringstream os;
+    os << "Error while deleting temp-file '" <<
+      tmpfilename << "':" <<
+      std::string(::strerror(errno));
+    throw PluginError(os.str());
+  }
 }
 
   } // namespace script

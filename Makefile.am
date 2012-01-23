@@ -20,7 +20,8 @@ uninstall-local:
 SUBDIRS = \
 	src \
 	include \
-	examples
+	examples \
+  testsuite
 
 EXTRA_DIST = \
     doxygen.am \

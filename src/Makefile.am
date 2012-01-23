@@ -1,14 +1,15 @@
-plugin_LTLIBRARIES = libdlvhexscript.la
+plugin_LTLIBRARIES = libdlvhexplugin-script.la
 
-libdlvhexscript_la_SOURCES = ScriptPlugin.cpp \
-                             ScriptAtom.cpp \
-                             ScriptConverter.cpp \
-							 ScriptProcess.cpp
+libdlvhexplugin_script_la_SOURCES = \
+  ScriptPlugin.cpp \
+  ScriptAtom.cpp \
+  ScriptConverter.cpp \
+  ScriptProcess.cpp
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
-        $(BOOST_CPPFLAGS) \
+  $(BOOST_CPPFLAGS) \
 	$(DLVHEX_CFLAGS)
 
-libdlvhexscript_la_LDFLAGS = -avoid-version -module
+libdlvhexplugin_script_la_LDFLAGS = -avoid-version -module
 

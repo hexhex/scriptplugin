@@ -11,13 +11,10 @@
 #if !defined(_DLHVEX_SCRIPTCONVERTER_H)
 #define _DLVHEX_SCRIPTCONVERTER_H
 
-#include <dlvhex/PluginInterface.h>
+#include <dlvhex2/PluginInterface.h>
 #include <fstream>
 
 #include "ScriptProcess.h"
-
-///@todo use mkstemp instead of the technique currently used
-#define TEMP_FILE_NAME "/tmp/dlvhex_conv.tmp"
 
 namespace dlvhex {
   namespace script {

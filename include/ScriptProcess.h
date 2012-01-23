@@ -1,5 +1,5 @@
-#include "dlvhex/ProcessBuf.h"
-#include <dlvhex/PluginInterface.h>
+#include <dlvhex2/PluginInterface.h>
+#include <dlvhex2/ProcessBuf.h>
 
 #include <string>
 #include <iosfwd> 

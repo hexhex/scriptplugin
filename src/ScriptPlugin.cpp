@@ -13,6 +13,8 @@
 #endif /* HAVE_CONFIG_H */
 
 #include "ScriptPlugin.h"
+#include <dlvhex2/PluginInterface.h>
+#include <dlvhex2/Logger.h>
 
 #include <cstdlib>
 
@@ -21,7 +23,7 @@ namespace dlvhex {
   namespace script {
 
 	ScriptPlugin::ScriptPlugin() : addToPath(""), converter(new ScriptConverter()) {
-		setNameVersion(PACKAGE_TARNAME, SCRIPTPLUGIN_MAJOR, SCRIPTPLUGIN_MINOR, SCRIPTPLUGIN_MICRO);
+		setNameVersion(PACKAGE_TARNAME, SCRIPTPLUGIN_VERSION_MAJOR, SCRIPTPLUGIN_VERSION_MINOR, SCRIPTPLUGIN_VERSION_MICRO);
 	}
 
 
@@ -104,6 +106,7 @@ namespace dlvhex {
 				path = this->addToPath;
 			else 
 				path = this->addToPath + ":" + path;
+            LOG(INFO,"setting PATH to '" << path << "'");
 			::setenv("PATH", path.c_str(), 1);
     	}
 	}
@@ -116,18 +119,11 @@ namespace dlvhex {
   } // namespace script
 } // namespace dlvhex
 
-//extern "C"
-//dlvhex::script::ScriptPlugin*
-//PLUGINIMPORTFUNCTION() {
-//  dlvhex::script::theScriptPlugin.setPluginName(PACKAGE_TARNAME);
-//  dlvhex::script::theScriptPlugin.setVersion(SCRIPTPLUGIN_MAJOR,
-//					     SCRIPTPLUGIN_MINOR,
-//					     SCRIPTPLUGIN_MICRO);
-
-//  return &dlvhex::script::theScriptPlugin;
-//}
+IMPLEMENT_PLUGINABIVERSIONFUNCTION
 
 extern "C"
 void *PLUGINIMPORTFUNCTION() {
 	return reinterpret_cast<void*>(& dlvhex::script::theScriptPlugin);
 }
+
+// vim:ts=4:

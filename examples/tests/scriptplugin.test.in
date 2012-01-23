@@ -1,5 +1,5 @@
 example1/script.hex example1.out --addpath=@abs_top_builddir@/examples/example1
-example2/int.hex example2.out --addpath=@abs_top_srcdir@/examples/
+example2/int.hex example2.out --addpath=@abs_top_builddir@/examples/example2
 @abs_top_builddir@/examples/example3/ls.hex example3.out --convert=@abs_top_builddir@/examples/example3/conv1.py
 example4/conv2.hex example4.out --convert=@abs_top_builddir@/examples/example4/conv2.sh --addpath=@abs_top_builddir@/examples/example4
 example7/input.hex example7.out --convert=@abs_top_builddir@/examples/example7/rename.py

@@ -1,3 +1,29 @@
+2012-XX-YY  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	Release version 2.0.0.
+
+2012-01-23  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	* NEWS: Update.
+	* AUTHORS: Update.
+
+2011-12-08  Sabine Laszakovits  <sabine.laszakovits@gmail.com>
+
+	Porting to dlvhex 2.0.0.
+
+2012-01-19  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	* src/ScriptPlugin.cpp: Adapting to header file name changes.
+	* src/ScriptAtom.cpp: Likewise.
+	* configure.ac: Likewise and using new dlvhex.m4.
+	* m4/dlvhex.m4: Likewise.
+
+2012-01-18  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	* include/ScriptConverter.h: Using tmpnam() instead of
+	fixed temporary file name.
+	* src/ScriptConverter.cpp: Likewise.
+
 2010-07-18  Thomas Krennwallner  <tkren@kr.tuwien.ac.at>
 
 	Release version 1.7.1.
