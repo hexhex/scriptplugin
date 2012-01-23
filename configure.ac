@@ -1,5 +1,5 @@
 AC_PREREQ([2.61])
-AC_INIT([dlvhex-scriptplugin],[2.0.0],[anton_korosec@hotmail.com])
+AC_INIT([dlvhex-scriptplugin],[2.0.0],[dlvhex-devel@lists.sourceforge.net])
 AC_CONFIG_SRCDIR([src/ScriptPlugin.cpp])
 AC_CONFIG_HEADERS([src/config.h])
 

@@ -1,3 +1,16 @@
+2012-XX-YY  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	Release version 2.0.0.
+
+2012-01-23  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	* NEWS: Update.
+	* AUTHORS: Update.
+
+2011-12-08  Sabine Laszakovits  <sabine.laszakovits@gmail.com>
+
+	Porting to dlvhex 2.0.0.
+
 2012-01-19  Peter Schueller  <ps@kr.tuwien.ac.at>
 
 	* src/ScriptPlugin.cpp: Adapting to header file name changes.
