@@ -3,6 +3,8 @@ dlvhex-scriptplugin NEWS -- history of user-visible changes.
 * Version 2.0.0
 
 ** Adapt to dlvhex 2.0.0.
+** Better error behavior if scripts are missing.
+** More testcases.
 
 
 * Version 1.7.1 (July 2010)
