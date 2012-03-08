@@ -1,3 +1,10 @@
+2012-03-08  Peter Schueller  <ps@kr.tuwien.ac.at>
+
+	Release version 1.7.2.
+
+	* NEWS: update.
+	* configure.ac: Bump version, new support email address.
+
 2012-01-18  Peter Schueller  <ps@kr.tuwien.ac.at>
 
 	* include/ScriptConverter.h: Using tmpnam() instead of

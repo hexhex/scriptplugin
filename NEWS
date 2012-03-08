@@ -1,5 +1,10 @@
 dlvhex-scriptplugin NEWS -- history of user-visible changes.
 
+* Version 1.7.2 (March 2012)
+
+** Using tmpnam() instead of fixed temporary file name.
+
+
 * Version 1.7.1 (July 2010)
 
 ** Fix compile error with gcc 4.4.
