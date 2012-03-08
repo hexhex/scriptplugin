@@ -22,9 +22,7 @@ esac
 
 # Checks for programs.
 AC_PROG_CXX
-#SABINE:
 AC_LANG([C++])
-#SABINE AC_PROG_CC
 
 # Checks for header files.
 AC_HEADER_DIRENT
