@@ -28,7 +28,7 @@
 namespace dlvhex {
   namespace script {
 
-	ScriptAtom::ScriptAtom() : PluginAtom("script", 0) {
+	ScriptAtom::ScriptAtom() : PluginAtom("script", 1) {
 		
 		addInputConstant();
 		setOutputArity(1);
